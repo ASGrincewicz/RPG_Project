@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowCamera : MonoBehaviour
+namespace RPG.Core
 {
-    [SerializeField] private Transform _target;
-    private Transform _transform;
-    private Camera _mainCamera;
-    private void Start()
+    public class FollowCamera : MonoBehaviour
     {
-        _transform = transform;
-        _mainCamera = Camera.main;
-    }
+        [SerializeField] private Transform _target;
+        private Transform _transform;
+        private Camera _mainCamera;
+        private void Start()
+        {
+            _transform = transform;
+            _mainCamera = Camera.main;
+        }
 
-    // Update is called once per frame
-    private void LateUpdate()
-    {
-        _transform.position = _target.position;
+        // Update is called once per frame
+        private void LateUpdate()
+        {
+            _transform.position = _target.position;
+        }
     }
 }

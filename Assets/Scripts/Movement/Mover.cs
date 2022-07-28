@@ -1,41 +1,58 @@
 using System;
+using RPG.Combat;
 using UnityEngine;
 using UnityEngine.AI;
 using Vector3 = UnityEngine.Vector3;
 
-[RequireComponent(typeof(NavMeshAgent))]
-public class Mover : MonoBehaviour
+namespace RPG.Movement
 {
-    private NavMeshAgent _navMeshAgent;
-    private Transform _transform;
-    private Animator _animator;
-    private readonly int _forwardSpeedParameter = Animator.StringToHash("ForwardSpeed");
-
-    private void Start()
+    [RequireComponent(typeof(NavMeshAgent))]
+    public class Mover : MonoBehaviour
     {
-        _navMeshAgent = GetComponent<NavMeshAgent>();
-        _transform = transform;
-        _animator = GetComponent<Animator>();
-    }
+        private NavMeshAgent _navMeshAgent;
+        private Transform _transform;
+        private Animator _animator;
+        private Fighter _fighter;
+        private readonly int _forwardSpeedParameter = Animator.StringToHash("ForwardSpeed");
 
-    private void Update()
-    {
-        UpdateAnimator();
-    }
+        private void Start()
+        {
+            _navMeshAgent = GetComponent<NavMeshAgent>();
+            _transform = transform;
+            _animator = GetComponent<Animator>();
+            _fighter = GetComponent<Fighter>();
+        }
 
-    public void MoveTo(Vector3 destination)
-    {
-        _navMeshAgent.SetDestination(destination);
-    }
+        private void Update()
+        {
+            UpdateAnimator();
+        }
 
-    private void UpdateAnimator()
-    {
-        //get global velocity from navmeshagent
-        Vector3 velocity = _navMeshAgent.velocity;
-        //Convert to local value relative to the character
-        Vector3 localVelocity = _transform.InverseTransformDirection(velocity);
-        float speed = localVelocity.z;
-        //Set animator blend value to desired forward speed.
-        _animator.SetFloat(_forwardSpeedParameter, speed);
+        public void StartMoveAction(Vector3 destination)
+        {
+            _fighter.Cancel();
+            MoveTo(destination);
+        }
+        public void MoveTo(Vector3 destination)
+        {
+            _navMeshAgent.SetDestination(destination);
+            _navMeshAgent.isStopped = false;
+        }
+
+        public void Stop()
+        {
+            _navMeshAgent.isStopped = true;
+        }
+
+        private void UpdateAnimator()
+        {
+            //get global velocity from navmeshagent
+            Vector3 velocity = _navMeshAgent.velocity;
+            //Convert to local value relative to the character
+            Vector3 localVelocity = _transform.InverseTransformDirection(velocity);
+            float speed = localVelocity.z;
+            //Set animator blend value to desired forward speed.
+            _animator.SetFloat(_forwardSpeedParameter, speed);
+        }
     }
 }

@@ -1,41 +1,31 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
+using Vector3 = UnityEngine.Vector3;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Mover : MonoBehaviour
 {
     private NavMeshAgent _navMeshAgent;
-    private Camera _mainCamera;
     private Transform _transform;
     private Animator _animator;
     private readonly int _forwardSpeedParameter = Animator.StringToHash("ForwardSpeed");
 
     private void Start()
-        {
-            _navMeshAgent = GetComponent<NavMeshAgent>();
-            _mainCamera = Camera.main;
-            _transform = transform;
-            _animator = GetComponent<Animator>();
-        }
-    
+    {
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _transform = transform;
+        _animator = GetComponent<Animator>();
+    }
+
     private void Update()
     {
-        if(Input.GetMouseButton(0))
-        {
-           MoveToCursor();
-        }
         UpdateAnimator();
     }
 
-    private void MoveToCursor()
+    public void MoveTo(Vector3 destination)
     {
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hitInfo;
-        bool hasHit = Physics.Raycast(ray, out hitInfo);
-        if (hasHit)
-        {
-            _navMeshAgent.SetDestination(hitInfo.point);
-        }
+        _navMeshAgent.SetDestination(destination);
     }
 
     private void UpdateAnimator()
@@ -46,6 +36,6 @@ public class Mover : MonoBehaviour
         Vector3 localVelocity = _transform.InverseTransformDirection(velocity);
         float speed = localVelocity.z;
         //Set animator blend value to desired forward speed.
-        _animator.SetFloat(_forwardSpeedParameter,speed);
+        _animator.SetFloat(_forwardSpeedParameter, speed);
     }
 }

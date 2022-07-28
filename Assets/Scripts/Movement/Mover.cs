@@ -1,5 +1,4 @@
-using System;
-using RPG.Combat;
+using RPG.Core;
 using UnityEngine;
 using UnityEngine.AI;
 using Vector3 = UnityEngine.Vector3;
@@ -7,12 +6,11 @@ using Vector3 = UnityEngine.Vector3;
 namespace RPG.Movement
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IAction
     {
         private NavMeshAgent _navMeshAgent;
         private Transform _transform;
         private Animator _animator;
-        private Fighter _fighter;
         private readonly int _forwardSpeedParameter = Animator.StringToHash("ForwardSpeed");
 
         private void Start()
@@ -20,7 +18,6 @@ namespace RPG.Movement
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _transform = transform;
             _animator = GetComponent<Animator>();
-            _fighter = GetComponent<Fighter>();
         }
 
         private void Update()
@@ -30,7 +27,8 @@ namespace RPG.Movement
 
         public void StartMoveAction(Vector3 destination)
         {
-            _fighter.Cancel();
+            GetComponent<ActionScheduler>().StartAction(this);
+            //_fighter.Cancel();
             MoveTo(destination);
         }
         public void MoveTo(Vector3 destination)
@@ -44,6 +42,10 @@ namespace RPG.Movement
             _navMeshAgent.isStopped = true;
         }
 
+        public void Cancel()
+        {
+           print("Move cancelled.");
+        }
         private void UpdateAnimator()
         {
             //get global velocity from navmeshagent

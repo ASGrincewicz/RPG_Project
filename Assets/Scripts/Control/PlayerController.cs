@@ -45,7 +45,7 @@ namespace RPG.Control
 
             foreach (RaycastHit hit in hits)
             {
-                CombatTarget target = hit.transform.gameObject.GetComponent<CombatTarget>();
+                ITargetable target = hit.transform.gameObject.GetComponent<ITargetable>();
                 if (target == null)
                 {
                     continue;

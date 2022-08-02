@@ -45,11 +45,10 @@ namespace RPG.Control
 
             foreach (RaycastHit hit in hits)
             {
-                ITargetable target = hit.transform.gameObject.GetComponent<ITargetable>();
-                if (target == null)
-                {
-                    continue;
-                }
+                IDamageable target = hit.transform.gameObject.GetComponent<IDamageable>();
+                
+                if(!_fighter.CanAttack(target)) continue;
+                
                 if(Input.GetMouseButtonDown(0))
                 {
                     _fighter.Attack(target);

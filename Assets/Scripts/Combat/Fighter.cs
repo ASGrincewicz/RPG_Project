@@ -2,6 +2,7 @@
 using RPG.Core;
 using UnityEngine;
 using RPG.Movement;
+using RPG.Utilities;
 
 namespace RPG.Combat
 {
@@ -17,6 +18,7 @@ namespace RPG.Combat
         private readonly int _attackTrigger = Animator.StringToHash("Attack");
         private readonly int _stopAttackTrigger = Animator.StringToHash("StopAttack");
         private float _timeSinceLastAttack;
+        private Transform _transform;
        
 
         private void Start()
@@ -24,6 +26,7 @@ namespace RPG.Combat
             _mover = GetComponent<Mover>();
             _animator = GetComponent<Animator>();
             _actionScheduler = GetComponent<ActionScheduler>();
+            _transform = transform;
         }
 
         private void Update()
@@ -32,7 +35,7 @@ namespace RPG.Combat
             if (_damageable == null) return;
             if (_damageable.IsDead) return;
 
-            if (!GetIsInRange(_damageable.GetTransform()))
+            if (!_transform.GetIsInRange(_damageable.GetTransform(),_weaponRange))
             {
                 _mover.MoveTo(_damageable.GetPosition());
             }
@@ -57,14 +60,9 @@ namespace RPG.Combat
             print("Attack canceled.");
         }
 
-        private bool GetIsInRange(Transform target)
-        {
-            return Vector3.Distance(transform.position, target.position) < _weaponRange;
-        }
-
         private void AttackBehaviour()
         {
-            transform.LookAt(_damageable.GetTransform());
+            _transform.LookAt(_damageable.GetTransform());
             //Throttle Attack Animation
             if (_timeSinceLastAttack > _timeBetweenAttacks && !_damageable.IsDead)
             {

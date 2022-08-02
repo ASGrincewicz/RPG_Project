@@ -12,12 +12,12 @@ namespace RPG.Combat
         [SerializeField] private float _timeBetweenAttacks;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
-        private ITargetable _target;
+        private IDamageable _damageable;
         private Animator _animator;
         private readonly int _attackTrigger = Animator.StringToHash("Attack");
         private readonly int _stopAttackTrigger = Animator.StringToHash("StopAttack");
         private float _timeSinceLastAttack;
-        private IDamageable _damageable;
+       
 
         private void Start()
         {
@@ -29,12 +29,12 @@ namespace RPG.Combat
         private void Update()
         {
             _timeSinceLastAttack += Time.deltaTime;
-            if (_target == null) return;
+            if (_damageable == null) return;
             if (_damageable.IsDead) return;
 
-            if (!GetIsInRange(_target.GetTransform()))
+            if (!GetIsInRange(_damageable.GetTransform()))
             {
-                _mover.MoveTo(_target.GetPosition());
+                _mover.MoveTo(_damageable.GetPosition());
             }
             else
             {
@@ -43,17 +43,16 @@ namespace RPG.Combat
             }
         }
 
-        public void Attack(ITargetable combatTarget)
+        public void Attack(IDamageable combatTarget)
         {
-            _target = combatTarget;
-            _damageable = _target.GetTransform().GetComponent<IDamageable>();
+            _damageable = combatTarget;
+           // _damageable = _target.GetTransform().GetComponent<IDamageable>();
             _actionScheduler.StartAction(this);
         }
 
         public void Cancel()
         {
             _animator.SetTrigger(_stopAttackTrigger);
-            _target = null;
             _damageable = null;
             print("Attack canceled.");
         }
@@ -65,9 +64,11 @@ namespace RPG.Combat
 
         private void AttackBehaviour()
         {
+            transform.LookAt(_damageable.GetTransform());
             //Throttle Attack Animation
             if (_timeSinceLastAttack > _timeBetweenAttacks && !_damageable.IsDead)
             {
+                _animator.ResetTrigger(_stopAttackTrigger);
                 _animator.SetTrigger(_attackTrigger);
                 _timeSinceLastAttack = 0f;
                 if (_damageable.IsDead)
@@ -76,11 +77,21 @@ namespace RPG.Combat
                 }
             }
         }
+
+        public bool CanAttack(IDamageable target)
+        {
+            if (target == null)
+            {
+                return false;
+            }
+            //Since this line will be reached only if target isn't null, only need to check if dead.
+            return !target.IsDead;
+        }
         
         //Animation Event
         private void Hit()
         {
-           if (_damageable != null && !_damageable.IsDead)
+           if (CanAttack(_damageable))
            {
                _damageable.TakeDamage(_weaponDamage);
            }

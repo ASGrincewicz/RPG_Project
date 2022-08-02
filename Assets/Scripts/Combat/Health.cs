@@ -1,9 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RPG.Combat
 {
-    public class Health : MonoBehaviour, IDamageable, ITargetable
+    [RequireComponent(typeof(Collider))]
+    public class Health : MonoBehaviour, IDamageable
     {
         [SerializeField] private float _health = 100.0f;
         //private Animator _animator;
@@ -23,9 +23,13 @@ namespace RPG.Combat
         public void Die()
         {
             if (IsDead) return;
-            GetComponent<Animator>().SetTrigger(_dieTrigger);
+            Animator animator = GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.SetTrigger(_dieTrigger);
+            }
             IsDead = true;
-            Destroy(gameObject,5.0f);
+            Destroy(gameObject,15.0f);
         }
         
         public Vector3 GetPosition() => transform.position;

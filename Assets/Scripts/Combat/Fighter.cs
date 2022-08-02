@@ -52,7 +52,7 @@ namespace RPG.Combat
 
         public void Cancel()
         {
-            _animator.SetTrigger(_stopAttackTrigger);
+            StopAttack();
             _damageable = null;
             print("Attack canceled.");
         }
@@ -68,8 +68,7 @@ namespace RPG.Combat
             //Throttle Attack Animation
             if (_timeSinceLastAttack > _timeBetweenAttacks && !_damageable.IsDead)
             {
-                _animator.ResetTrigger(_stopAttackTrigger);
-                _animator.SetTrigger(_attackTrigger);
+                TriggerAttack();
                 _timeSinceLastAttack = 0f;
                 if (_damageable.IsDead)
                 {
@@ -95,6 +94,18 @@ namespace RPG.Combat
            {
                _damageable.TakeDamage(_weaponDamage);
            }
+        }
+
+        private void TriggerAttack()
+        {
+            _animator.ResetTrigger(_stopAttackTrigger);
+            _animator.SetTrigger(_attackTrigger);
+        }
+
+        private void StopAttack()
+        {
+            _animator.ResetTrigger(_attackTrigger);
+            _animator.SetTrigger(_stopAttackTrigger);
         }
     }
 }

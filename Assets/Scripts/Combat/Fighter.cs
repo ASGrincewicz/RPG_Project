@@ -16,7 +16,7 @@ namespace RPG.Combat
         private Animator _animator;
         private readonly int _attackTrigger = Animator.StringToHash("Attack");
         private readonly int _stopAttackTrigger = Animator.StringToHash("StopAttack");
-        private float _timeSinceLastAttack;
+        private float _timeSinceLastAttack = Mathf.Infinity;
        
 
         private void Start()

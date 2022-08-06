@@ -8,6 +8,7 @@ namespace RPG.Movement
     [RequireComponent(typeof(NavMeshAgent))]
     public class Mover : MonoBehaviour, IAction
     {
+        private Health _health;
         private NavMeshAgent _navMeshAgent;
         private Transform _transform;
         private Animator _animator;
@@ -15,6 +16,7 @@ namespace RPG.Movement
 
         private void Start()
         {
+            _health = GetComponent<Health>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _transform = transform;
             _animator = GetComponent<Animator>();
@@ -22,6 +24,7 @@ namespace RPG.Movement
 
         private void Update()
         {
+            _navMeshAgent.enabled = !_health.IsDead;
             UpdateAnimator();
         }
 

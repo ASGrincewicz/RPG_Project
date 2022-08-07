@@ -8,6 +8,9 @@ namespace RPG.Control
     public class AIController : MonoBehaviour
     {
         [SerializeField] private float _chaseDistance = 3.0f;
+
+        private Vector3 _guardPosition;
+        //Cached References
         private Fighter _fighter;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
@@ -21,16 +24,17 @@ namespace RPG.Control
             _fighter = GetComponent<Fighter>();
             _mover = GetComponent<Mover>();
             _actionScheduler = GetComponent<ActionScheduler>();
-            _transform = transform;
             _health = GetComponent<Health>();
+            _transform = transform;
+            _guardPosition = _transform.position;
         }
 
         private void Start()
         {
             _player = GameObject.FindWithTag("Player");
-            if (_player != null)
+            if (_player == null)
             {
-                print("Found player!");
+                print("Have Not Found Player!");
             }
         }
 
@@ -43,6 +47,10 @@ namespace RPG.Control
                 {
                     _fighter.Attack(_target);
                 }
+            }
+            else
+            {
+                _mover.StartMoveAction(_guardPosition);
             }
         }
 
@@ -60,6 +68,12 @@ namespace RPG.Control
             }
 
             return false;
+        }
+        //Called by Unity
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, _chaseDistance);
         }
     }
 }

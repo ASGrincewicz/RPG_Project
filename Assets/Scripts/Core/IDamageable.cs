@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace RPG.Combat
+namespace RPG.Core
 {
     public interface IDamageable
     {

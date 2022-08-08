@@ -34,7 +34,7 @@ namespace RPG.Combat
 
             if (!GetIsInRange(_damageable.GetTransform()))
             {
-                _mover.MoveTo(_damageable.GetPosition());
+                _mover.MoveTo(_damageable.GetPosition(),1f);
             }
             else
             {

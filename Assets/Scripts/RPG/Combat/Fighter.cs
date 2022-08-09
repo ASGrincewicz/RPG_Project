@@ -54,7 +54,7 @@ namespace RPG.Combat
         {
             StopAttack();
             _damageable = null;
-            print("Attack canceled.");
+            _mover.Cancel();
         }
 
         private bool GetIsInRange(Transform target)

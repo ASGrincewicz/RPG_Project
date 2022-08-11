@@ -1,7 +1,9 @@
+using System;
 using RPG.Combat;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using UnityEngine.AI;
 
 namespace RPG.Control
 {
@@ -19,6 +21,16 @@ namespace RPG.Control
             _fighter = GetComponent<Fighter>();
             _health = GetComponent<Health>();
             _mainCamera = Camera.main;
+        }
+
+        private void OnEnable()
+        {
+            _mover.GetComponent<NavMeshAgent>().enabled = true;
+        }
+
+        private void OnDisable()
+        {
+            _mover.GetComponent<NavMeshAgent>().enabled = false;
         }
 
         private void Update()

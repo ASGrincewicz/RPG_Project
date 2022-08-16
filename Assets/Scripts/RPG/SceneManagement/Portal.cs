@@ -15,10 +15,16 @@ namespace RPG.SceneManagement
         [SerializeField] private int _sceneToLoad;
         [SerializeField] private Transform _spawnPoint;
         [SerializeField] private DestinationIdentifier _destination;
+        [Header("Transition Fade Configuration")]
+        [SerializeField] private float _fadeOutTime = 1f;
+        [SerializeField] private float _fadeInTime = 2f;
+        [SerializeField] private float _fadeWaitTime = 1f;
+        private WaitForSeconds _fadeDelay;
 
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
+            _fadeDelay = new WaitForSeconds(_fadeWaitTime);
             StartCoroutine(Transition());
         }
 
@@ -29,10 +35,17 @@ namespace RPG.SceneManagement
                 Debug.LogError("Scene to load not set.");
                 yield break;
             }
+            
             DontDestroyOnLoad(gameObject);
+            
+            Fader fader = FindObjectOfType<Fader>();
+
+            yield return fader.FadeOut(_fadeOutTime);
             yield return SceneManager.LoadSceneAsync(_sceneToLoad);
             Portal exitPortal = GetExitPortal();
             UpdatePlayer(exitPortal);
+            yield return _fadeDelay;
+            yield return fader.FadeIn(_fadeInTime);
             Destroy(gameObject);
         }
 

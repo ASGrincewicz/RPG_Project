@@ -109,4 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneToLoad: 0
   _spawnPoint: {fileID: 8247251796009996860}
-  _portalID: 0
+  _destination: 0
+  _fadeOutTime: 1
+  _fadeInTime: 1
+  _fadeWaitTime: 1

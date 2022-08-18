@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
+using Object = System.Object;
 
 namespace Saving
 {
@@ -14,10 +16,9 @@ namespace Saving
             Debug.Log($"Saving to {path}");
             using (FileStream stream = File.Open(path, FileMode.Create))
             {
-                Transform playerTransform = GetPlayerTransform();
+                
                 BinaryFormatter formatter = new BinaryFormatter();
-                SerializableVector3 position = new SerializableVector3(playerTransform.position);
-                formatter.Serialize(stream, position);
+                formatter.Serialize(stream, CaptureState());
             }
         }
 
@@ -26,11 +27,9 @@ namespace Saving
             string path = GetPathFromSaveFile(savefile);
             using (FileStream stream = File.Open(path,FileMode.Open))
             {
-                Transform playerTransform = GetPlayerTransform();
                 BinaryFormatter formatter = new BinaryFormatter();
-                SerializableVector3 position = (SerializableVector3)formatter.Deserialize(stream);
-                playerTransform.position = position.ToVector();
-                print(playerTransform.position);
+                RestoreState(formatter.Deserialize(stream));
+                
             }
         }
 
@@ -39,9 +38,24 @@ namespace Saving
             return Path.Combine($"{Application.persistentDataPath}",$"{savefile}.sav");
         }
 
-        private Transform GetPlayerTransform()
+        private object CaptureState()
         {
-            return GameObject.FindGameObjectWithTag("Player").transform;
+            Dictionary<string, object> state = new Dictionary<string, object>();
+            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            {
+               state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
+            }
+
+            return state;
+        }
+
+        private void RestoreState(object state)
+        {
+            Dictionary<string, object> stateDictionary = (Dictionary<string, object>)state;
+            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
+            {
+                saveable.RestoreState(stateDictionary[saveable.GetUniqueIdentifier()]);
+            }
         }
     }
 }

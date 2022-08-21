@@ -16,7 +16,7 @@ namespace Saving
             CaptureState(state);
             SaveFile(saveFile, state);
         }
-
+        
         public void Load(string saveFile)
         {
             RestoreState(LoadFile(saveFile));
@@ -39,6 +39,7 @@ namespace Saving
            }
         }
 
+       
         private Dictionary<string, object> LoadFile(string saveFile)
         { 
             string path = GetPathFromSaveFile(saveFile);

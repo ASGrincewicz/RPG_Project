@@ -7,13 +7,16 @@ namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
-        [SerializeField] private float _weaponDamage = 5.0f;
-        [SerializeField] private float _weaponRange = 2.0f;
-        [SerializeField] private float _timeBetweenAttacks;
+        [Header("Weapon Configuration")] 
+        [SerializeField] private Weapon _weapon = null;
+        [SerializeField] private Transform _handTransform = null;
+        
+        
         private Mover _mover;
         private ActionScheduler _actionScheduler;
         private IDamageable _damageable;
         private Animator _animator;
+        
         private readonly int _attackTrigger = Animator.StringToHash("Attack");
         private readonly int _stopAttackTrigger = Animator.StringToHash("StopAttack");
         private float _timeSinceLastAttack = Mathf.Infinity;
@@ -24,6 +27,10 @@ namespace RPG.Combat
             _mover = GetComponent<Mover>();
             _animator = GetComponent<Animator>();
             _actionScheduler = GetComponent<ActionScheduler>();
+            if (_weapon != null)
+            {
+                SpawnWeapon();
+            }
         }
 
         private void Update()
@@ -54,19 +61,19 @@ namespace RPG.Combat
         {
             StopAttack();
             _damageable = null;
-            _mover.Cancel();
+            _mover.Cancel(); 
         }
 
         private bool GetIsInRange(Transform target)
         {
-            return Vector3.Distance(transform.position, target.position) < _weaponRange;
+            return Vector3.Distance(transform.position, target.position) < _weapon.WeaponRange;
         }
 
         private void AttackBehaviour()
         {
             transform.LookAt(_damageable.GetTransform());
             //Throttle Attack Animation
-            if (_timeSinceLastAttack > _timeBetweenAttacks && !_damageable.IsDead)
+            if (_timeSinceLastAttack > _weapon.TimeBetweenAttacks && !_damageable.IsDead)
             {
                 TriggerAttack();
                 _timeSinceLastAttack = 0f;
@@ -92,7 +99,7 @@ namespace RPG.Combat
         {
            if (CanAttack(_damageable))
            {
-               _damageable.TakeDamage(_weaponDamage);
+               _damageable.TakeDamage(_weapon.WeaponDamage);
            }
         }
 
@@ -106,6 +113,11 @@ namespace RPG.Combat
         {
             _animator.ResetTrigger(_attackTrigger);
             _animator.SetTrigger(_stopAttackTrigger);
+        }
+
+        private void SpawnWeapon()
+        {
+            _weapon.SpawnWeapon(_handTransform, _animator);
         }
     }
 }

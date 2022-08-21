@@ -1,3 +1,4 @@
+using Saving;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -13,5 +14,6 @@ namespace RPG.Cinematics
             GetComponent<PlayableDirector>().Play();
             _hasPlayed = true;
         }
+        
     }
 }

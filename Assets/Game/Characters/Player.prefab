@@ -67,6 +67,30 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 466375a3edda0c64a9413a694dffb3f6, type: 2}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _weaponRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _weaponDamage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _weaponPrefab
+      value: 
+      objectReference: {fileID: 1739958048789919584, guid: f1d38e55e49163d4aba9a1647d95cdb0, type: 3}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _handTransform
+      value: 
+      objectReference: {fileID: 2996104009233932259}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _swordOverrideController
+      value: 
+      objectReference: {fileID: 22100000, guid: e72c067e5dfc83d4bbbd9baf07385ebd, type: 2}
     - target: {fileID: 7372674669137342117, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -159,3 +183,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 9505156, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
+--- !u!4 &2996104009233932259 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 461188, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
+  m_PrefabInstance: {fileID: 2996104009233995367}
+  m_PrefabAsset: {fileID: 0}

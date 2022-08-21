@@ -75,6 +75,7 @@ namespace RPG.Movement
             //NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
             _navMeshAgent.enabled = false;
             _transform.position = position.ToVector();
+            _navMeshAgent.Warp(position.ToVector());
             _navMeshAgent.enabled = true;
             _actionScheduler.CancelAction();
         }

@@ -1,13 +1,14 @@
 ﻿using System;
+using Saving;
 using UnityEngine;
 
 namespace RPG.Core
 {
     [RequireComponent(typeof(Collider))]
-    public class Health : MonoBehaviour, IDamageable
+    public class Health : MonoBehaviour, IDamageable, ISaveable
     {
         [SerializeField] private float _health = 100.0f;
-        //private Animator _animator;
+        
         private readonly int _dieTrigger = Animator.StringToHash("Die");
         public bool IsDead { get; private set; }
 
@@ -37,11 +38,24 @@ namespace RPG.Core
             {
                 actionScheduler.CancelAction();
             }
-            Destroy(gameObject,15.0f);
+            //Destroy(gameObject,15.0f);
         }
         
         public Vector3 GetPosition() => transform.position;
         public Transform GetTransform() => transform;
 
+        public object CaptureState()
+        {
+            return _health;
+        }
+
+        public void RestoreState(object state)
+        {
+            _health = (float)state;
+            if (_health <= 0)
+            {
+                Die();
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Saving
@@ -7,9 +7,9 @@ namespace Saving
     {
         private const string _defaultSaveFile = "RPG_Save";
 
-        private void Start()
+        private IEnumerator Start()
         {
-            Load();
+            yield return  GetComponent<SavingSystem>().LoadLastScene(_defaultSaveFile);
         }
 
         private void Update()

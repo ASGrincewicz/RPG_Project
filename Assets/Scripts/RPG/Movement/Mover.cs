@@ -17,7 +17,7 @@ namespace RPG.Movement
         private Animator _animator;
         private readonly int _forwardSpeedParameter = Animator.StringToHash("ForwardSpeed");
 
-        private void Start()
+        private void Awake()
         {
             _health = GetComponent<Health>();
             _actionScheduler = GetComponent<ActionScheduler>();

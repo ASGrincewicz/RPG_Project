@@ -58,6 +58,7 @@ namespace Saving
 
             _globalLookup[property.stringValue] = this;
         }
+#endif
 
         private bool IsUnique(string candidate)
         {
@@ -85,6 +86,5 @@ namespace Saving
 
             return false;
         }
-#endif
     }
 }

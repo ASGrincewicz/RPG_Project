@@ -1,4 +1,5 @@
 using RPG.Core;
+using Saving;
 using UnityEngine;
 using UnityEngine.AI;
 using Vector3 = UnityEngine.Vector3;
@@ -6,10 +7,11 @@ using Vector3 = UnityEngine.Vector3;
 namespace RPG.Movement
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class Mover : MonoBehaviour, IAction
+    public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField] private float _maxSpeed = 5.66f;
         private Health _health;
+        private ActionScheduler _actionScheduler;
         private NavMeshAgent _navMeshAgent;
         private Transform _transform;
         private Animator _animator;
@@ -18,6 +20,7 @@ namespace RPG.Movement
         private void Start()
         {
             _health = GetComponent<Health>();
+            _actionScheduler = GetComponent<ActionScheduler>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _transform = transform;
             _animator = GetComponent<Animator>();
@@ -31,7 +34,7 @@ namespace RPG.Movement
 
         public void StartMoveAction(Vector3 destination, float speedFraction)
         {
-            GetComponent<ActionScheduler>().StartAction(this);
+            _actionScheduler.StartAction(this);
             MoveTo(destination, speedFraction);
         }
         public void MoveTo(Vector3 destination, float speedFraction)
@@ -59,6 +62,21 @@ namespace RPG.Movement
             float speed = localVelocity.z;
             //Set animator blend value to desired forward speed.
             _animator.SetFloat(_forwardSpeedParameter, speed);
+        }
+
+        public object CaptureState()
+        {
+            return new SerializableVector3(transform.position);
+        }
+
+        public void RestoreState(object state)
+        {
+            SerializableVector3 position = (SerializableVector3)state;
+            //NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
+            _navMeshAgent.enabled = false;
+            _transform.position = position.ToVector();
+            _navMeshAgent.enabled = true;
+            _actionScheduler.CancelAction();
         }
     }
 }

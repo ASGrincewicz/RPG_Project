@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using RPG.Core;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Saving
 {
@@ -10,18 +14,33 @@ namespace Saving
         [SerializeField] private string _uniqueIdentifier = "";
         public string GetUniqueIdentifier()
         {
-            return "";
+            return _uniqueIdentifier;
         }
+
+        private static Dictionary<string, SaveableEntity> _globalLookup = new Dictionary<string, SaveableEntity>();
 
         public object CaptureState()
         {
-            print($"Capturing State for {GetUniqueIdentifier()}.");
-            return null;
+            Dictionary<string, object> state = new Dictionary<string, object>();
+            foreach (ISaveable saveable in GetComponents<ISaveable>())
+            {
+                state[saveable.GetType().ToString()] = saveable.CaptureState();
+            }
+
+            return state;
         }
 
         public void RestoreState(object state)
         {
-            print($"Restoring State for {GetUniqueIdentifier()}.");
+            Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
+            foreach (ISaveable saveable in GetComponents<ISaveable>())
+            {
+                string typeString = saveable.GetType().ToString();
+                if (stateDict.ContainsKey(typeString))
+                {
+                    saveable.RestoreState(stateDict[typeString]);
+                }
+            }
         }
 #if UNITY_EDITOR
         private void Update()
@@ -31,12 +50,40 @@ namespace Saving
 
             SerializedObject serializedObject = new SerializedObject(this);
             SerializedProperty property = serializedObject.FindProperty("_uniqueIdentifier");
-            if (string.IsNullOrEmpty(property.stringValue))
+            if (string.IsNullOrEmpty(property.stringValue)|| !IsUnique(property.stringValue))
             {
-                property.stringValue = System.Guid.NewGuid().ToString();
+                property.stringValue = Guid.NewGuid().ToString();
                 serializedObject.ApplyModifiedProperties();
             }
-            print($"Editing {this.name}");
+
+            _globalLookup[property.stringValue] = this;
+        }
+
+        private bool IsUnique(string candidate)
+        {
+            if (!_globalLookup.ContainsKey(candidate))
+            {
+                return true;
+            }
+           
+            if (_globalLookup[candidate] == this)
+            {
+                return true;
+            }
+
+            if (_globalLookup[candidate] == null)
+            {
+                _globalLookup.Remove(candidate);
+                return true;
+            }
+
+            if (_globalLookup[candidate].GetUniqueIdentifier() != candidate)
+            {
+                _globalLookup.Remove(candidate);
+                return true;
+            }
+
+            return false;
         }
 #endif
     }

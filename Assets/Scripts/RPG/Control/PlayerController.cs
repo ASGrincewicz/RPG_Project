@@ -1,7 +1,9 @@
+using System;
 using RPG.Combat;
 using UnityEngine;
 using RPG.Movement;
 using RPG.Core;
+using UnityEngine.AI;
 
 namespace RPG.Control
 {
@@ -21,6 +23,16 @@ namespace RPG.Control
             _mainCamera = Camera.main;
         }
 
+        private void OnEnable()
+        {
+            _mover.GetComponent<NavMeshAgent>().enabled = true;
+        }
+
+        private void OnDisable()
+        {
+            _mover.GetComponent<NavMeshAgent>().enabled = false;
+        }
+
         private void Update()
         {
             if (_health.IsDead) return;
@@ -36,7 +48,7 @@ namespace RPG.Control
             {
                 if (Input.GetMouseButton(0))
                 {
-                    _mover.StartMoveAction(hitInfo.point);
+                    _mover.StartMoveAction(hitInfo.point,1);
                 }
                 return true;
             }
@@ -53,8 +65,9 @@ namespace RPG.Control
                 
                 if(!_fighter.CanAttack(target)) continue;
                 
-                if(Input.GetMouseButtonDown(0))
+                if(Input.GetMouseButton(0) && target != this.GetComponent<IDamageable>())
                 {
+                    //Attack
                     _fighter.Attack(target);
                 }
 

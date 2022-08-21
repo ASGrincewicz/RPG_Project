@@ -63,6 +63,14 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.35
       objectReference: {fileID: 0}
+    - target: {fileID: 3052336382238064183, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: m_Center.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3121047557625718998, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _maxSpeed
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4572300904474370668, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -82,6 +90,10 @@ PrefabInstance:
     - target: {fileID: 5296029589211591839, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: m_Speed
       value: 3.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _weaponDamage
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -111,6 +123,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _chaseDistance: 5
   _suspicionWaitTime: 5
+  _patrolSpeedFraction: 0.55
+  _patrolPath: {fileID: 0}
+  _waypointTolerance: 1
+  _waypointDwellTime: 2
 --- !u!1001 &5738878008565688772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -132,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 417656, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.15
       objectReference: {fileID: 0}
     - target: {fileID: 417656, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
       propertyPath: m_LocalPosition.z

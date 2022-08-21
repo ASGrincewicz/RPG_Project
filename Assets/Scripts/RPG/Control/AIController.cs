@@ -9,7 +9,9 @@ namespace RPG.Control
     {
         [SerializeField] private float _chaseDistance = 3.0f;
         [SerializeField] private float _suspicionWaitTime = 3.0f;
-        [Header("Patrol Configuration")]
+
+        [Header("Patrol Configuration")] 
+        [SerializeField, Range(0,1)] private float _patrolSpeedFraction = 0.2f;
         [SerializeField] private PatrolPath _patrolPath = null;
         [SerializeField] private float _waypointTolerance = 1.0f;
         [SerializeField] private float _waypointDwellTime = 2.0f;
@@ -82,7 +84,7 @@ namespace RPG.Control
             Vector3 nextPosition = _guardPosition;
             if (_patrolPath != null)
             {
-               
+               //Change speed to Patrol Speed.
                 if (AtWaypoint())
                 {
                     _timeAtWaypoint = 0;
@@ -95,12 +97,12 @@ namespace RPG.Control
                 
                 if (_timeAtWaypoint > _waypointDwellTime)
                 {
-                    _mover.StartMoveAction(nextPosition);
+                    _mover.StartMoveAction(nextPosition, _patrolSpeedFraction);
                 }
             }
             else
             {
-                _mover.StartMoveAction(nextPosition);
+                _mover.StartMoveAction(nextPosition, _patrolSpeedFraction);
             }
            
         }
@@ -129,6 +131,7 @@ namespace RPG.Control
         private void AttackBehavior()
         {
             _timeSinceLastSawPlayer = 0;
+            //Change Speed to Chase Speed.
             _fighter.Attack(_target);
         }
 

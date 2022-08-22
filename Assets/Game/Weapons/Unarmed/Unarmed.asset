@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99beff90762949a49b726b697a010d67, type: 3}
   m_Name: Unarmed
   m_EditorClassIdentifier: 
-  _swordOverrideController: {fileID: 0}
+  _animatorOverrideController: {fileID: 0}
   _weaponPrefab: {fileID: 0}
   WeaponDamage: 5
-  WeaponRange: 2
+  WeaponRange: 1
   TimeBetweenAttacks: 1

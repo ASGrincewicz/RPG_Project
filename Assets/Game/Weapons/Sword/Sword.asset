@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99beff90762949a49b726b697a010d67, type: 3}
   m_Name: Sword
   m_EditorClassIdentifier: 
-  _swordOverrideController: {fileID: 22100000, guid: e72c067e5dfc83d4bbbd9baf07385ebd, type: 2}
+  _animatorOverrideController: {fileID: 22100000, guid: e72c067e5dfc83d4bbbd9baf07385ebd, type: 2}
   _weaponPrefab: {fileID: 1739958048789919584, guid: f1d38e55e49163d4aba9a1647d95cdb0, type: 3}
   WeaponDamage: 10
-  WeaponRange: 5
+  WeaponRange: 4
   TimeBetweenAttacks: 1

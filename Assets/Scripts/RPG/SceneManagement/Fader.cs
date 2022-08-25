@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPG.SceneManagement
@@ -12,8 +10,15 @@ namespace RPG.SceneManagement
         private CanvasGroup _canvasGroup;
 
         private void Awake()
-        { 
-            _canvasGroup = GetComponent<CanvasGroup>();
+        {
+            try
+            {
+                TryGetComponent(out _canvasGroup);
+            }
+            catch 
+            {
+                Debug.LogError("Canvas group not found.");
+            }
         }
 
         public void FadeOutImmediate()

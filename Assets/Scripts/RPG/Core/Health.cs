@@ -1,5 +1,4 @@
-﻿using System;
-using Saving;
+﻿using Saving;
 using UnityEngine;
 
 namespace RPG.Core
@@ -27,14 +26,12 @@ namespace RPG.Core
         {
             if (IsDead) return;
             IsDead = true;
-            Animator animator = GetComponent<Animator>();
-            if (animator != null)
+            if(TryGetComponent(out Animator animator))
             {
                 animator.SetTrigger(_dieTrigger);
             }
 
-            ActionScheduler actionScheduler = GetComponent<ActionScheduler>();
-            if (actionScheduler != null)
+            if(TryGetComponent(out ActionScheduler actionScheduler))
             {
                 actionScheduler.CancelAction();
             }

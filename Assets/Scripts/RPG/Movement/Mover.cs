@@ -19,11 +19,14 @@ namespace RPG.Movement
 
         private void Awake()
         {
-            _health = GetComponent<Health>();
-            _actionScheduler = GetComponent<ActionScheduler>();
-            _navMeshAgent = GetComponent<NavMeshAgent>();
+            if (TryGetComponent(out _health))
+            {
+                print("found health component!");
+            }
+            TryGetComponent(out _actionScheduler);
+            TryGetComponent(out _navMeshAgent);
             _transform = transform;
-            _animator = GetComponent<Animator>();
+            TryGetComponent(out _animator);
         }
 
         private void Update()

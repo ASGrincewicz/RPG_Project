@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using RPG.Core;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Saving
 {
@@ -22,7 +19,8 @@ namespace Saving
         public object CaptureState()
         {
             Dictionary<string, object> state = new Dictionary<string, object>();
-            foreach (ISaveable saveable in GetComponents<ISaveable>())
+            ISaveable[] saveables = GetComponents<ISaveable>();
+            foreach (ISaveable saveable in saveables)
             {
                 state[saveable.GetType().ToString()] = saveable.CaptureState();
             }

@@ -1,4 +1,3 @@
-using Saving;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -11,7 +10,10 @@ namespace RPG.Cinematics
         {
             if (!other.CompareTag("Player")) return;
             if (_hasPlayed) return;
-            GetComponent<PlayableDirector>().Play();
+            if (TryGetComponent(out PlayableDirector director))
+            {
+                director.Play();
+            }
             _hasPlayed = true;
         }
         

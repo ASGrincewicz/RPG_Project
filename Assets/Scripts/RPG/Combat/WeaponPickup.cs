@@ -9,8 +9,11 @@ namespace RPG.Combat
         {
             if (other.CompareTag("Player"))
             {
-                other.GetComponent<Fighter>().EquipWeapon(_weapon);
-                Destroy(gameObject);
+                if (other.TryGetComponent(out Fighter fighter))
+                {
+                    fighter.EquipWeapon(_weapon);
+                    Destroy(gameObject);
+                }
             }
         }
     }

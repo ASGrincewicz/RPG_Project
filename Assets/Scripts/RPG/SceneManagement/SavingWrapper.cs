@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.IO;
+﻿using System.Collections;
 using UnityEngine;
 using Saving;
 
@@ -21,8 +19,9 @@ namespace RPG.SceneManagement
         {
             Fader fader = FindObjectOfType<Fader>();
             fader.FadeOutImmediate();
-            //if(File.Exists(GetComponents<SavingSystem>().))
-            yield return  GetComponent<SavingSystem>().LoadLastScene(_defaultSaveFile);
+
+            TryGetComponent(out SavingSystem savingSystem);
+            yield return  savingSystem.LoadLastScene(_defaultSaveFile);
             yield return fader.FadeIn(_fadeInTime);
         }
 

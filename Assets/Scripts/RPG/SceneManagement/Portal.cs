@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using RPG.Control;
-using Saving;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -46,7 +44,7 @@ namespace RPG.SceneManagement
             yield return fader.FadeOut(_fadeOutTime);
             savingWrapper.Save();
             yield return SceneManager.LoadSceneAsync(_sceneToLoad);
-            PlayerController newPlayerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+            GameObject.FindWithTag("Player").TryGetComponent(out PlayerController newPlayerController);
             newPlayerController.enabled = false;
             
             savingWrapper.Load();
@@ -66,7 +64,7 @@ namespace RPG.SceneManagement
         private void UpdatePlayer(Portal portal)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            NavMeshAgent navMeshAgent = player.GetComponent<NavMeshAgent>();
+            player.TryGetComponent(out NavMeshAgent navMeshAgent);
             navMeshAgent.enabled = false;
             navMeshAgent.Warp(portal._spawnPoint.position);
             player.transform.rotation = portal._spawnPoint.rotation;

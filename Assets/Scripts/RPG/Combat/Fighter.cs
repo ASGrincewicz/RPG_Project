@@ -1,5 +1,4 @@
-﻿using System;
-using RPG.Core;
+﻿using RPG.Core;
 using UnityEngine;
 using RPG.Movement;
 
@@ -23,9 +22,9 @@ namespace RPG.Combat
 #region Unity Events
         private void Start()
         {
-            _mover = GetComponent<Mover>();
-            _animator = GetComponent<Animator>();
-            _actionScheduler = GetComponent<ActionScheduler>();
+            TryGetComponent(out _mover);
+            TryGetComponent(out _animator);
+            TryGetComponent(out _actionScheduler);
             if (_defaultWeapon != null)
             {
                 EquipWeapon(_defaultWeapon);

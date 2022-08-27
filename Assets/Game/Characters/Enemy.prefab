@@ -103,6 +103,14 @@ PrefabInstance:
       propertyPath: _handTransform
       value: 
       objectReference: {fileID: 5738878008565800650}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _leftHandTransform
+      value: 
+      objectReference: {fileID: 5738878008565743304}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _rightHandTransform
+      value: 
+      objectReference: {fileID: 5738878008565800650}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 1723168476651033029, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
@@ -145,6 +153,10 @@ PrefabInstance:
     - target: {fileID: 133518, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
       propertyPath: m_Name
       value: Character_Knights_Soldier_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 167656, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 417656, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
       propertyPath: m_RootOrder
@@ -197,6 +209,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 9572094, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
+--- !u!4 &5738878008565743304 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 481036, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}
+  m_PrefabInstance: {fileID: 5738878008565688772}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5738878008565800650 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 423694, guid: 30cf93deff988e74e88a144bd2127c18, type: 3}

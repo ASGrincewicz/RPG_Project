@@ -11,12 +11,15 @@ namespace RPG.Combat
         [field: SerializeField] public float WeaponDamage;
         [field: SerializeField] public float WeaponRange;
         [field: SerializeField] public float TimeBetweenAttacks;
+        [field: SerializeField] public bool IsRightHanded = true;
         
 
-        public void SpawnWeapon(Transform handTransform, Animator animator)
+        public void SpawnWeapon(Transform rightHand, Transform leftHand, Animator animator)
         {
             if (_weaponPrefab != null)
             {
+                Transform handTransform = IsRightHanded ? rightHand : leftHand;
+                
                 Instantiate(_weaponPrefab, handTransform);
             }
 

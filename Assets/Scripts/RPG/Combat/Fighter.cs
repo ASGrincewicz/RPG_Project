@@ -8,7 +8,8 @@ namespace RPG.Combat
     {
         [Header("Weapon Configuration")] 
         [SerializeField] private Weapon _defaultWeapon = null;
-        [SerializeField] private Transform _handTransform = null;
+        [SerializeField] private Transform _rightHandTransform = null;
+        [SerializeField] private Transform _leftHandTransform = null;
         private Weapon _currentWeapon = null;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
@@ -78,7 +79,7 @@ namespace RPG.Combat
         {
             _currentWeapon = weapon;
             print($"Current weapon is {weapon.name}");
-            weapon.SpawnWeapon(_handTransform, _animator);
+            weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
         }
 #endregion
 

@@ -10,6 +10,15 @@ namespace Saving
 {
     public class SavingSystem: MonoBehaviour
     {
+        public bool CheckIfSaveFileExists(string saveFile)
+        {
+            if (File.Exists(GetPathFromSaveFile(saveFile)))
+            {
+                return true;
+            }
+
+            return false;
+        }
         public void Save(string saveFile)
         {
             Dictionary<string, object> state = LoadFile(saveFile);
@@ -20,6 +29,20 @@ namespace Saving
         public void Load(string saveFile)
         {
             RestoreState(LoadFile(saveFile));
+        }
+        
+        public IEnumerator LoadLastScene(string saveFile)
+        {
+            Dictionary<string, object> state = LoadFile(saveFile);
+            int buildIndex = (int)state["lastSceneBuildIndex"];
+            if (state.ContainsKey("lastSceneBuildIndex"))
+            {
+                if (buildIndex != SceneManager.GetActiveScene().buildIndex)
+                {
+                    yield return SceneManager.LoadSceneAsync(buildIndex);
+                }
+            }
+            RestoreState(state);
         }
 
         private string GetPathFromSaveFile(string saveFile)
@@ -74,20 +97,6 @@ namespace Saving
                     saveable.RestoreState(state[id]);
                 }
             }
-        }
-
-        public IEnumerator LoadLastScene(string saveFile)
-        {
-            Dictionary<string, object> state = LoadFile(saveFile);
-            int buildIndex = (int)state["lastSceneBuildIndex"];
-            if (state.ContainsKey("lastSceneBuildIndex"))
-            {
-                if (buildIndex != SceneManager.GetActiveScene().buildIndex)
-                {
-                    yield return SceneManager.LoadSceneAsync(buildIndex);
-                }
-            }
-            RestoreState(state);
         }
     }
 }

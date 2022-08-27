@@ -9,26 +9,14 @@ namespace RPG.SceneManagement
         [SerializeField] private float _fadeTime;
         private CanvasGroup _canvasGroup;
 
-        private void Awake()
+       public void FadeOutImmediate()
         {
-            try
-            {
-                TryGetComponent(out _canvasGroup);
-            }
-            catch 
-            {
-                Debug.LogError("Canvas group not found.");
-            }
-        }
-
-        public void FadeOutImmediate()
-        {
-            _canvasGroup.alpha = 1;
+           if(TryGetComponent(out _canvasGroup)) _canvasGroup.alpha = 1;
         }
 
         public IEnumerator FadeOut(float time)
         {
-            while (_canvasGroup.alpha < 1) //alpha is not one
+            while (TryGetComponent(out _canvasGroup) && _canvasGroup.alpha < 1) //alpha is not one
             {
                 _canvasGroup.alpha += Time.deltaTime / time;
                 yield return null;
@@ -37,7 +25,7 @@ namespace RPG.SceneManagement
 
         public IEnumerator FadeIn(float time)
         {
-            while (_canvasGroup.alpha > 0) //alpha is not zero
+            while (TryGetComponent(out _canvasGroup) && _canvasGroup.alpha > 0) //alpha is not zero
             {
                 _canvasGroup.alpha -= Time.deltaTime / time;
                 yield return null;

@@ -77,6 +77,7 @@ namespace RPG.Combat
         public void EquipWeapon(Weapon weapon)
         {
             _currentWeapon = weapon;
+            print($"Current weapon is {weapon.name}");
             weapon.SpawnWeapon(_handTransform, _animator);
         }
 #endregion

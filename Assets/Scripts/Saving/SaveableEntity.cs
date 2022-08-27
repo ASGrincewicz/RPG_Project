@@ -19,9 +19,10 @@ namespace Saving
         public object CaptureState()
         {
             Dictionary<string, object> state = new Dictionary<string, object>();
-            ISaveable[] saveables = GetComponents<ISaveable>();
-            foreach (ISaveable saveable in saveables)
+            
+            foreach (ISaveable saveable in GetComponents<ISaveable>())
             {
+                print($"{saveable}");
                 state[saveable.GetType().ToString()] = saveable.CaptureState();
             }
 

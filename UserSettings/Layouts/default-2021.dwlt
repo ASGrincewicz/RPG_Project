@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Inspector
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 148
+  controlID: 104
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 91
+  controlID: 56
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -225,7 +225,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 21
+  controlID: 65
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -879,23 +879,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: aa360200
-      m_LastClickedID: 0
-      m_ExpandedIDs: d243feff3c45feffec52feff0260feffda60feff787afeff1a9afeff4aa1feff5cacfeff1ec3feff861fffffb61fffffba1fffffbe1fffffc21fffff0a20ffff0e20ffff1220ffff2620ffff2a20ffff3a20ffff5020ffff5c20ffff1022ffff662bffff962bffff9a2bffff9e2bffffa22bffffe62bffffea2bffffee2bfffff22bffff062cffff0a2cffff1a2cffff302cffff3c2cffff0e2effff9274ffff7e7effffb28effff9892ffff94baffff92c7fffffcc8ffff92ccffff0ed0ffffdae3ffff16fbfffff4fffffff45b00002c0801006c08010092bb0100
+      m_SelectedIDs: caf4ffff
+      m_LastClickedID: -2870
+      m_ExpandedIDs: 18fbfffffc5b0000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: WeaponPickup
-        m_OriginalName: WeaponPickup
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -106494
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 10}
       m_SearchString: 
@@ -946,7 +946,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Asset Packs/GameDev.tv Assets/Simple Bow/Prefab
+    - Assets/Scripts/RPG/Combat
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 0
@@ -961,7 +961,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: a66d0000
     m_LastClickedID: 28070
-    m_ExpandedIDs: 00000000d00c0000e4630000e6630000e8630000ea630000ec630000ee630000f0630000f2630000f4630000f6630000f8630000fa630000fc630000fe63000000640000026400000464000006640000086400000a640000
+    m_ExpandedIDs: 00000000ce0c00002c6400002e64000030640000326400003464000036640000386400003a6400003c6400003e64000040640000426400004464000046640000486400004a6400004c6400004e64000050640000526400005464000056640000586400005a640000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -986,10 +986,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_AssetTreeState:
-    scrollPos: {x: 0, y: 0}
+    scrollPos: {x: 0, y: 452}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffff00000000d00c0000e4630000e6630000e8630000ea630000ec630000ee630000f0630000f2630000f4630000f6630000f8630000fa630000fc630000fe63000000640000066400000a640000b68c0100baa2010014f701003a160200b8360200c0360200ce360200
+    m_ExpandedIDs: ffffffff00000000ce0c00002c6400002e64000030640000326400003464000036640000386400003a6400003c6400003e64000040640000426400004464000046640000486400004a6400004c6400004e64000050640000526400005464000056640000586400005a640000bc640000be640000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

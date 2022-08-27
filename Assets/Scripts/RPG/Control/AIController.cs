@@ -96,7 +96,7 @@ namespace RPG.Control
         private void PatrolBehavior()
         {
             Vector3 nextPosition = _guardPosition;
-            if (TryGetComponent(out _patrolPath))
+            if (_patrolPath != null)
             {
                //Change speed to Patrol Speed.
                 if (AtWaypoint())

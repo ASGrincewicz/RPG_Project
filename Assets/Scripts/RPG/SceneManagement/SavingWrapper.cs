@@ -18,11 +18,18 @@ namespace RPG.SceneManagement
         private IEnumerator Start()
         {
             Fader fader = FindObjectOfType<Fader>();
-            fader.FadeOutImmediate();
-
             TryGetComponent(out SavingSystem savingSystem);
-            yield return  savingSystem.LoadLastScene(_defaultSaveFile);
-            yield return fader.FadeIn(_fadeInTime);
+            if (_savingSystem.CheckIfSaveFileExists(_defaultSaveFile))
+            {
+                fader.FadeOutImmediate();
+                print("Save File Found: Fading out");
+                yield return  savingSystem.LoadLastScene(_defaultSaveFile);
+            }
+            else
+            {
+                yield return fader.FadeIn(_fadeInTime);
+                print("No Save File Found.");
+            }
         }
 
         private void Update()

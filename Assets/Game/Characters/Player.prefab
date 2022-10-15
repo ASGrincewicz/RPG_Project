@@ -84,6 +84,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1739958048789919584, guid: f1d38e55e49163d4aba9a1647d95cdb0, type: 3}
     - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: fb5796185243beb4d89b17b82f811e4f, type: 2}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _handTransform
       value: 
       objectReference: {fileID: 2996104009233932259}
@@ -136,6 +140,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3633697936199500746}
     m_Modifications:
+    - target: {fileID: 164946, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 180360, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 191330, guid: 679ff741e12a7e740819ede24a7000b7, type: 3}
       propertyPath: m_Name
       value: Character_Knights_Soldier_02

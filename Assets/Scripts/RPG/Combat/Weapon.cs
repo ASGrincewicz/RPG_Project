@@ -6,7 +6,7 @@ namespace RPG.Combat
     public class Weapon : ScriptableObject
     {
         [SerializeField] private AnimatorOverrideController _animatorOverrideController;
-        [SerializeField] private GameObject _weaponPrefab = null;
+        [SerializeField] private GameObject _weaponPrefab;
         
         [field: SerializeField] public float WeaponDamage;
         [field: SerializeField] public float WeaponRange;

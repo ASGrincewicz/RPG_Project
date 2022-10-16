@@ -1,21 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using RPG.Core;
 using UnityEngine;
 
 namespace RPG.Combat
 {
     public class Projectile : MonoBehaviour
     {
-        [SerializeField] private Transform _target;
         [SerializeField] private float _speed;
-
-        private void Start()
-        {
-            _target = GameObject.FindWithTag("Player").transform;
-            
-        }
-
+        private IDamageable _target;
+        private float _damage;
+        
         private void Update()
         {
             if (_target != null)
@@ -25,15 +19,35 @@ namespace RPG.Combat
             }
         }
 
+        public void SetTargetAndDamage(IDamageable target, float damage)
+        {
+            _target = target;
+            _damage = damage;
+        }
+
         private Vector3 GetAimLocation()
         {
-            if (_target.TryGetComponent(out CapsuleCollider targetCapsule))
+            CapsuleCollider targetCollider = _target.GetCapsuleCollider();
+            if (targetCollider != null)
             {
-                return _target.position + Vector3.up * targetCapsule.height / 1.5f;
+                return _target.GetPosition() + Vector3.up * targetCollider.height / 1.5f;
             }
             else
             {
-                return _target.position;
+                return _target.GetPosition();
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.GetComponent<IDamageable>() != null)
+            {
+                _target.TakeDamage(_damage);
+                Destroy(gameObject);
+            }
+            else
+            {
+                return;
             }
         }
     }

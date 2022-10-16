@@ -107,11 +107,20 @@ namespace RPG.Combat
         //Animation Event
         private void Hit()
         {
-           if (CanAttack(_damageable))
-           {
-               _damageable.TakeDamage(_currentWeapon.WeaponDamage);
-           }
+            if (CanAttack(_damageable))
+            {
+                if (_currentWeapon.HasProjectile())
+                {
+                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable);
+                }
+                else
+                {
+                    _damageable.TakeDamage(_currentWeapon.WeaponDamage);
+                }
+            }
         }
+        //Animation Event
+        private void Shoot() => Hit();
 
         private void TriggerAttack()
         {

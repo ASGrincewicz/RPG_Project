@@ -41,6 +41,16 @@ namespace RPG.Core
         public Vector3 GetPosition() => transform.position;
         public Transform GetTransform() => transform;
 
+        public CapsuleCollider GetCapsuleCollider()
+        {
+            CapsuleCollider capsuleCollider = GetComponentInParent<CapsuleCollider>();
+            if (capsuleCollider != null)
+            {
+                return capsuleCollider;
+            } 
+            return null;
+        }
+
         public object CaptureState()
         {
             return _health;

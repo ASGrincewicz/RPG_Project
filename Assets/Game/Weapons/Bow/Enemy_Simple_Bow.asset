@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99beff90762949a49b726b697a010d67, type: 3}
-  m_Name: Simple_Bow
+  m_Name: Enemy_Simple_Bow
   m_EditorClassIdentifier: 
   _animatorOverrideController: {fileID: 22100000, guid: 70d4a9a4334cc7c49992bd9d7ba60696, type: 2}
   _weaponPrefab: {fileID: 8284024072517552261, guid: 8bc4fc2f67409154a8f24d867b3ddf47, type: 3}
   WeaponDamage: 10
   WeaponRange: 10
-  TimeBetweenAttacks: 2
+  TimeBetweenAttacks: 3
   IsRightHanded: 0
-  Projectile: {fileID: 7341794826310342493, guid: 43dcc7bb76756dc4fa7e8ef039cac56a, type: 3}
+  Projectile: {fileID: 370740134411093397, guid: 0615e966d35b5404ca35dcddca210ec4, type: 3}

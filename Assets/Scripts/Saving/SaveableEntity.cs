@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using RPG.Core;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Saving
 {
@@ -22,8 +19,10 @@ namespace Saving
         public object CaptureState()
         {
             Dictionary<string, object> state = new Dictionary<string, object>();
+            
             foreach (ISaveable saveable in GetComponents<ISaveable>())
             {
+                print($"{saveable}");
                 state[saveable.GetType().ToString()] = saveable.CaptureState();
             }
 
@@ -58,6 +57,7 @@ namespace Saving
 
             _globalLookup[property.stringValue] = this;
         }
+#endif
 
         private bool IsUnique(string candidate)
         {
@@ -85,6 +85,5 @@ namespace Saving
 
             return false;
         }
-#endif
     }
 }

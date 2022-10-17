@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RPG.Control
@@ -6,6 +5,7 @@ namespace RPG.Control
     public class PatrolPath : MonoBehaviour
     {
         private const float _waypointGizmoRadius = .25f;
+        #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             for (int i = 0; i < transform.childCount; i++)
@@ -16,6 +16,7 @@ namespace RPG.Control
                 Gizmos.DrawLine(GetWaypoint(i), GetWaypoint(j));
             }
         }
+        #endif
 
         public int GetNextIndex(int i)
         {

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Saving;
 using UnityEngine;
 
 namespace RPG.Core
 {
     [RequireComponent(typeof(Collider))]
-    public class Health : MonoBehaviour, IDamageable
+    public class Health : MonoBehaviour, IDamageable, ISaveable
     {
         [SerializeField] private float _health = 100.0f;
-        //private Animator _animator;
+        
         private readonly int _dieTrigger = Animator.StringToHash("Die");
         public bool IsDead { get; private set; }
 
@@ -26,22 +26,43 @@ namespace RPG.Core
         {
             if (IsDead) return;
             IsDead = true;
-            Animator animator = GetComponent<Animator>();
-            if (animator != null)
+            if(TryGetComponent(out Animator animator))
             {
                 animator.SetTrigger(_dieTrigger);
             }
 
-            ActionScheduler actionScheduler = GetComponent<ActionScheduler>();
-            if (actionScheduler != null)
+            if(TryGetComponent(out ActionScheduler actionScheduler))
             {
                 actionScheduler.CancelAction();
             }
-            Destroy(gameObject,15.0f);
+            //Destroy(gameObject,15.0f);
         }
         
         public Vector3 GetPosition() => transform.position;
         public Transform GetTransform() => transform;
 
+        public CapsuleCollider GetCapsuleCollider()
+        {
+            CapsuleCollider capsuleCollider = GetComponentInParent<CapsuleCollider>();
+            if (capsuleCollider != null)
+            {
+                return capsuleCollider;
+            } 
+            return null;
+        }
+
+        public object CaptureState()
+        {
+            return _health;
+        }
+
+        public void RestoreState(object state)
+        {
+            _health = (float)state;
+            if (_health <= 0)
+            {
+                Die();
+            }
+        }
     }
 }

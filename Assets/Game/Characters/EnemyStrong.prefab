@@ -12,9 +12,21 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1962047312162787507, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: _weapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 466375a3edda0c64a9413a694dffb3f6, type: 2}
+    - target: {fileID: 1962047312162787507, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: _weaponRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962047312162787507, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: _weaponDamage
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1962047312162787507, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: _handTransform
+      value: 
+      objectReference: {fileID: 2700453980521525102}
     - target: {fileID: 5738878008551901848, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -89,3 +101,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+--- !u!4 &2700453980521525102 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5738878008565800650, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+  m_PrefabInstance: {fileID: 7700424955910680996}
+  m_PrefabAsset: {fileID: 0}

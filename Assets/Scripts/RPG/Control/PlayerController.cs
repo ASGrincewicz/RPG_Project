@@ -1,4 +1,3 @@
-using System;
 using RPG.Combat;
 using UnityEngine;
 using RPG.Movement;
@@ -14,23 +13,59 @@ namespace RPG.Control
         private Fighter _fighter;
         private Camera _mainCamera;
         private Health _health;
+        private IDamageable _damageable;
 
         private void Awake()
         {
-            _mover = GetComponent<Mover>();
-            _fighter = GetComponent<Fighter>();
-            _health = GetComponent<Health>();
+            if(!TryGetComponent(out _fighter))
+            {
+                Debug.LogError("Fighter behaviour not assigned.");
+            }
+            
+            if(!TryGetComponent(out _mover))
+            {
+                Debug.LogError("Mover behaviour not assigned.");
+            }
+           
+            if (!TryGetComponent(out _health))
+            {
+                Debug.LogError("Health not found!");
+            }
+            if (!TryGetComponent(out _damageable))
+            {
+                Debug.LogError("IDamageable interface not found!");
+            }
             _mainCamera = Camera.main;
         }
 
         private void OnEnable()
         {
-            _mover.GetComponent<NavMeshAgent>().enabled = true;
+            try
+            {
+                if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
+                {
+                    navMeshAgent.enabled = true;
+                }
+            }
+            catch
+            {
+                Debug.LogError("Nav Mesh Agent not found!");
+            }
         }
 
         private void OnDisable()
         {
-            _mover.GetComponent<NavMeshAgent>().enabled = false;
+            try
+            {
+                if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
+                {
+                    navMeshAgent.enabled = false;
+                }
+            }
+            catch
+            {
+                Debug.LogError("Nav Mesh Agent not found!");
+            }
         }
 
         private void Update()
@@ -61,11 +96,11 @@ namespace RPG.Control
 
             foreach (RaycastHit hit in hits)
             {
-                IDamageable target = hit.transform.gameObject.GetComponent<IDamageable>();
+                hit.transform.gameObject.TryGetComponent(out IDamageable target);
                 
                 if(!_fighter.CanAttack(target)) continue;
                 
-                if(Input.GetMouseButton(0) && target != this.GetComponent<IDamageable>())
+                if(Input.GetMouseButton(0) && target !=_damageable)
                 {
                     //Attack
                     _fighter.Attack(target);

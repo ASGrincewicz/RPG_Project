@@ -9,5 +9,7 @@ namespace RPG.Core
         
         public Vector3 GetPosition();
         public Transform GetTransform();
+
+        public CapsuleCollider GetCapsuleCollider();
     }
 }

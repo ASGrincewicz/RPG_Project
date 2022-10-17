@@ -17,13 +17,16 @@ namespace RPG.Movement
         private Animator _animator;
         private readonly int _forwardSpeedParameter = Animator.StringToHash("ForwardSpeed");
 
-        private void Start()
+        private void Awake()
         {
-            _health = GetComponent<Health>();
-            _actionScheduler = GetComponent<ActionScheduler>();
-            _navMeshAgent = GetComponent<NavMeshAgent>();
+            if (TryGetComponent(out _health))
+            {
+                print("found health component!");
+            }
+            TryGetComponent(out _actionScheduler);
+            TryGetComponent(out _navMeshAgent);
             _transform = transform;
-            _animator = GetComponent<Animator>();
+            TryGetComponent(out _animator);
         }
 
         private void Update()
@@ -75,6 +78,7 @@ namespace RPG.Movement
             //NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
             _navMeshAgent.enabled = false;
             _transform.position = position.ToVector();
+            _navMeshAgent.Warp(position.ToVector());
             _navMeshAgent.enabled = true;
             _actionScheduler.CancelAction();
         }

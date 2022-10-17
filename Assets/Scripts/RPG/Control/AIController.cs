@@ -34,10 +34,24 @@ namespace RPG.Control
 
         private void Awake()
         {
-            _fighter = GetComponent<Fighter>();
-            _mover = GetComponent<Mover>();
-            _actionScheduler = GetComponent<ActionScheduler>();
-            _health = GetComponent<Health>();
+            if(!TryGetComponent(out _fighter))
+            {
+                Debug.LogError("Fighter behaviour not assigned.");
+            }
+            if(!TryGetComponent(out _mover))
+            {
+                Debug.LogError("Mover behaviour not assigned.");
+            }
+
+            if (!TryGetComponent(out _actionScheduler))
+            {
+                Debug.LogError("Action Scheduler not found.");
+            }
+
+            if (!TryGetComponent(out _health))
+            {
+                Debug.LogError("Health not found!");
+            }
             _transform = transform;
             _guardPosition = _transform.position;
         }
@@ -139,8 +153,8 @@ namespace RPG.Control
         {
             float distance = Vector3.Distance(_transform.position, target.transform.position);
             if (_target == null)
-            {
-                _target = target.GetComponent<IDamageable>();
+            { 
+                target.TryGetComponent(out _target);
             }
             
             if (distance < _chaseDistance && _target != null)
@@ -151,10 +165,12 @@ namespace RPG.Control
             return false;
         }
         //Called by Unity
+        #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(transform.position, _chaseDistance);
         }
+        #endif
     }
 }

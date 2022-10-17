@@ -1,5 +1,4 @@
-﻿using System;
-using RPG.Core;
+﻿using RPG.Core;
 using UnityEngine;
 using RPG.Movement;
 
@@ -7,23 +6,30 @@ namespace RPG.Combat
 {
     public class Fighter : MonoBehaviour, IAction
     {
-        [SerializeField] private float _weaponDamage = 5.0f;
-        [SerializeField] private float _weaponRange = 2.0f;
-        [SerializeField] private float _timeBetweenAttacks;
+        [Header("Weapon Configuration")] 
+        [SerializeField] private Weapon _defaultWeapon = null;
+        [SerializeField] private Transform _rightHandTransform = null;
+        [SerializeField] private Transform _leftHandTransform = null;
+        private Weapon _currentWeapon = null;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
         private IDamageable _damageable;
         private Animator _animator;
+        
         private readonly int _attackTrigger = Animator.StringToHash("Attack");
         private readonly int _stopAttackTrigger = Animator.StringToHash("StopAttack");
         private float _timeSinceLastAttack = Mathf.Infinity;
-       
-
+        
+#region Unity Events
         private void Start()
         {
-            _mover = GetComponent<Mover>();
-            _animator = GetComponent<Animator>();
-            _actionScheduler = GetComponent<ActionScheduler>();
+            TryGetComponent(out _mover);
+            TryGetComponent(out _animator);
+            TryGetComponent(out _actionScheduler);
+            if (_defaultWeapon != null)
+            {
+                EquipWeapon(_defaultWeapon);
+            }
         }
 
         private void Update()
@@ -42,6 +48,9 @@ namespace RPG.Combat
                 AttackBehaviour();
             }
         }
+#endregion
+
+#region Public API
 
         public void Attack(IDamageable combatTarget)
         {
@@ -54,29 +63,9 @@ namespace RPG.Combat
         {
             StopAttack();
             _damageable = null;
-            _mover.Cancel();
+            _mover.Cancel(); 
         }
-
-        private bool GetIsInRange(Transform target)
-        {
-            return Vector3.Distance(transform.position, target.position) < _weaponRange;
-        }
-
-        private void AttackBehaviour()
-        {
-            transform.LookAt(_damageable.GetTransform());
-            //Throttle Attack Animation
-            if (_timeSinceLastAttack > _timeBetweenAttacks && !_damageable.IsDead)
-            {
-                TriggerAttack();
-                _timeSinceLastAttack = 0f;
-                if (_damageable.IsDead)
-                {
-                    Cancel();
-                }
-            }
-        }
-
+        
         public bool CanAttack(IDamageable target)
         {
             if (target == null)
@@ -86,15 +75,52 @@ namespace RPG.Combat
             //Since this line will be reached only if target isn't null, only need to check if dead.
             return !target.IsDead;
         }
-        
+        public void EquipWeapon(Weapon weapon)
+        {
+            _currentWeapon = weapon;
+            print($"Current weapon is {weapon.name}");
+            weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
+        }
+#endregion
+
+#region Private Methods
+
+        private bool GetIsInRange(Transform target)
+        {
+            return Vector3.Distance(transform.position, target.position) < _currentWeapon.WeaponRange;
+        }
+
+        private void AttackBehaviour()
+        {
+            transform.LookAt(_damageable.GetTransform());
+            //Throttle Attack Animation
+            if (_timeSinceLastAttack > _currentWeapon.TimeBetweenAttacks && !_damageable.IsDead)
+            {
+                TriggerAttack();
+                _timeSinceLastAttack = 0f;
+                if (_damageable.IsDead)
+                {
+                    Cancel();
+                }
+            }
+        }
         //Animation Event
         private void Hit()
         {
-           if (CanAttack(_damageable))
-           {
-               _damageable.TakeDamage(_weaponDamage);
-           }
+            if (CanAttack(_damageable))
+            {
+                if (_currentWeapon.HasProjectile())
+                {
+                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable);
+                }
+                else
+                {
+                    _damageable.TakeDamage(_currentWeapon.WeaponDamage);
+                }
+            }
         }
+        //Animation Event
+        private void Shoot() => Hit();
 
         private void TriggerAttack()
         {
@@ -107,5 +133,6 @@ namespace RPG.Combat
             _animator.ResetTrigger(_attackTrigger);
             _animator.SetTrigger(_stopAttackTrigger);
         }
+#endregion
     }
 }

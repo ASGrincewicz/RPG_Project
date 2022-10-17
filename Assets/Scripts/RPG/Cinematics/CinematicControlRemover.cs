@@ -1,5 +1,4 @@
-﻿using System;
-using RPG.Control;
+﻿using RPG.Control;
 using RPG.Core;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -11,20 +10,32 @@ namespace RPG.Cinematics
         private GameObject _player;
         private void Start()
         {
-            GetComponent<PlayableDirector>().stopped += EnableControl;
-            GetComponent<PlayableDirector>().played += DisableControl;
+            if (TryGetComponent(out PlayableDirector director))
+            {
+                director.stopped += EnableControl;
+                director.played += DisableControl;
+            }
             _player = GameObject.FindWithTag("Player");
         }
 
         private void EnableControl(PlayableDirector director)
         {
-            _player.GetComponent<PlayerController>().enabled = true;
+            if (_player.TryGetComponent(out PlayerController playerController))
+            {
+                playerController.enabled = true;
+            }
         }
 
         private void DisableControl(PlayableDirector director)
         { 
-            _player.GetComponent<ActionScheduler>().CancelAction();
-            _player.GetComponent<PlayerController>().enabled =  false;
+            if (_player.TryGetComponent(out PlayerController playerController))
+            {
+                playerController.enabled = false;
+            }
+            if (_player.TryGetComponent(out ActionScheduler actionScheduler))
+            {
+               actionScheduler.CancelAction();
+            }
         }
     }
 }

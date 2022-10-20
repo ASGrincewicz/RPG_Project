@@ -1,12 +1,14 @@
 ﻿using RPG.Core;
 using UnityEngine;
 using RPG.Movement;
+using Saving;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction
+    public class Fighter : MonoBehaviour, IAction, ISaveable
     {
         [Header("Weapon Configuration")] 
+        [SerializeField] private string _defaultWeaponName = "Unarmed";
         [SerializeField] private Weapon _defaultWeapon = null;
         [SerializeField] private Transform _rightHandTransform = null;
         [SerializeField] private Transform _leftHandTransform = null;
@@ -21,12 +23,12 @@ namespace RPG.Combat
         private float _timeSinceLastAttack = Mathf.Infinity;
         
 #region Unity Events
-        private void Start()
+        private void Awake()
         {
             TryGetComponent(out _mover);
             TryGetComponent(out _animator);
             TryGetComponent(out _actionScheduler);
-            if (_defaultWeapon != null)
+            if (_currentWeapon == null)
             {
                 EquipWeapon(_defaultWeapon);
             }
@@ -80,6 +82,18 @@ namespace RPG.Combat
             _currentWeapon = weapon;
             print($"Current weapon is {weapon.name}");
             weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
+        }
+
+        public object CaptureState()
+        {
+            return _currentWeapon.name;
+        }
+
+        public void RestoreState(object state)
+        {
+            string weaponName = (string)state;
+            Weapon weapon = Resources.Load<Weapon>(weaponName);
+            EquipWeapon(weapon);
         }
 #endregion
 

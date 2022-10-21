@@ -22,7 +22,7 @@ namespace RPG.Attributes
 
         private void Update()
         {
-            _healthValueText.text = $"{_health.GetPercentage()}%";
+            _healthValueText.text = $"{_health.GetPercentage():0}%";
         }
     }
 }

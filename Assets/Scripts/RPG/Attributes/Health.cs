@@ -8,7 +8,7 @@ namespace RPG.Attributes
     [RequireComponent(typeof(Collider))]
     public class Health : MonoBehaviour, IDamageable, ISaveable
     {
-        [SerializeField] private float _health = 100.0f;
+        [field:SerializeField] public float HealthPoints { get; private set; }
         
         private readonly int _dieTrigger = Animator.StringToHash("Die");
         public bool IsDead { get; private set; }
@@ -17,7 +17,7 @@ namespace RPG.Attributes
         {
             if (TryGetComponent(out BaseStats baseStats))
             {
-                _health = baseStats.GetHealth();
+                HealthPoints = baseStats.GetHealth();
             }
         }
 
@@ -25,7 +25,7 @@ namespace RPG.Attributes
         {
             if (TryGetComponent(out BaseStats baseStats))
             {
-                return 100.0f*(_health / baseStats.GetHealth());
+                return 100.0f*(HealthPoints / baseStats.GetHealth());
             }
 
             return 0.0f;
@@ -33,13 +33,13 @@ namespace RPG.Attributes
 
         public void TakeDamage(float damage)
         {
-            _health = Mathf.Max(_health - damage, 0);
-            if (_health == 0 )
+            HealthPoints = Mathf.Max(HealthPoints - damage, 0);
+            if (HealthPoints == 0 )
             {
                 Die();
                 print($"{name} is dead.");
             }
-            print(_health);
+            print(HealthPoints);
         }
 
         public void Die()
@@ -73,13 +73,13 @@ namespace RPG.Attributes
 
         public object CaptureState()
         {
-            return _health;
+            return HealthPoints;
         }
 
         public void RestoreState(object state)
         {
-            _health = (float)state;
-            if (_health <= 0)
+            HealthPoints = (float)state;
+            if (HealthPoints <= 0)
             {
                 Die();
             }

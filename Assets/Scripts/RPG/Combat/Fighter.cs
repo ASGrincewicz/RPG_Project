@@ -85,6 +85,11 @@ namespace RPG.Combat
             weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
         }
 
+        public IDamageable GetTarget()
+        {
+            return _damageable;
+        }
+
         public object CaptureState()
         {
             return _currentWeapon.name;

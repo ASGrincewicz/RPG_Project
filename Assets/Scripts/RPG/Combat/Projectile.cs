@@ -13,6 +13,7 @@ namespace RPG.Combat
         [SerializeField] private GameObject[] _destroyOnHit;
         private IDamageable _target;
         private float _damage;
+        private GameObject _instigator;
 
         private void Start()
         {
@@ -34,9 +35,10 @@ namespace RPG.Combat
             }
         }
 
-        public void SetTargetAndDamage(IDamageable target, float damage)
+        public void SetTargetAndDamage(IDamageable target,GameObject instigator, float damage)
         {
             _target = target;
+            _instigator = instigator;
             _damage = damage;
             Destroy(gameObject,_maxLifetime);
         }
@@ -60,7 +62,7 @@ namespace RPG.Combat
             {
                 if (_target.IsDead) return;
                 _speed = 0;
-                _target.TakeDamage(_damage);
+                _target.TakeDamage(_instigator,_damage);
                 if (_hitEffect != null)
                 {
                     Instantiate(_hitEffect, GetAimLocation(), transform.rotation);
@@ -68,7 +70,7 @@ namespace RPG.Combat
 
                 foreach (GameObject toDestroy in _destroyOnHit)
                 {
-                    Destroy(gameObject);
+                    Destroy(toDestroy);
                 }
             }
             Destroy(gameObject, _lifeAfterImpact);

@@ -31,12 +31,13 @@ namespace RPG.Attributes
             return 0.0f;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(GameObject instigator, float damage)
         {
             HealthPoints = Mathf.Max(HealthPoints - damage, 0);
             if (HealthPoints == 0 )
             {
                 Die();
+                AwardExperience(instigator);
                 print($"{name} is dead.");
             }
             print(HealthPoints);
@@ -56,6 +57,16 @@ namespace RPG.Attributes
                 actionScheduler.CancelAction();
             }
             //Destroy(gameObject,15.0f);
+        }
+
+        private void AwardExperience(GameObject instigator)
+        {
+            if (!TryGetComponent(out BaseStats baseStats)) return;
+            float xpReward = baseStats.GetExperienceReward();
+            if (instigator.TryGetComponent(out Experience experience))
+            {
+                experience.GainXP(xpReward);
+            }
         }
         
         public Vector3 GetPosition() => transform.position;

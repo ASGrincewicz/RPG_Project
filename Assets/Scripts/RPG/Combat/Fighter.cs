@@ -131,11 +131,11 @@ namespace RPG.Combat
             {
                 if (_currentWeapon.HasProjectile())
                 {
-                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable);
+                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable,gameObject);
                 }
                 else
                 {
-                    _damageable.TakeDamage(_currentWeapon.WeaponDamage);
+                    _damageable.TakeDamage(gameObject,_currentWeapon.WeaponDamage);
                 }
             }
         }

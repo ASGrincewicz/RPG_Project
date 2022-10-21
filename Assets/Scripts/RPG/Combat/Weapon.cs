@@ -38,12 +38,12 @@ namespace RPG.Combat
             }
         }
 
-        public void LaunchProjectile(Transform rightHand, Transform leftHand, IDamageable target)
+        public void LaunchProjectile(Transform rightHand, Transform leftHand, IDamageable target, GameObject instigator)
         {
             Projectile projectileInstance = Instantiate(Projectile, GetHandTransform(rightHand, leftHand).position,
                 Quaternion.identity);
             projectileInstance.transform.position = GetHandTransform(rightHand, leftHand).position;
-            projectileInstance.SetTargetAndDamage(target,WeaponDamage);
+            projectileInstance.SetTargetAndDamage(target,instigator,WeaponDamage);
         }
 
         public bool HasProjectile()

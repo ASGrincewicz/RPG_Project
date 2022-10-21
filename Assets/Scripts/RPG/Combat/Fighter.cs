@@ -1,12 +1,15 @@
-﻿using RPG.Core;
+﻿using RPG.Attributes;
+using RPG.Core;
 using UnityEngine;
 using RPG.Movement;
+using Saving;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction
+    public class Fighter : MonoBehaviour, IAction, ISaveable
     {
         [Header("Weapon Configuration")] 
+        [SerializeField] private string _defaultWeaponName = "Unarmed";
         [SerializeField] private Weapon _defaultWeapon = null;
         [SerializeField] private Transform _rightHandTransform = null;
         [SerializeField] private Transform _leftHandTransform = null;
@@ -21,12 +24,12 @@ namespace RPG.Combat
         private float _timeSinceLastAttack = Mathf.Infinity;
         
 #region Unity Events
-        private void Start()
+        private void Awake()
         {
             TryGetComponent(out _mover);
             TryGetComponent(out _animator);
             TryGetComponent(out _actionScheduler);
-            if (_defaultWeapon != null)
+            if (_currentWeapon == null)
             {
                 EquipWeapon(_defaultWeapon);
             }
@@ -81,6 +84,23 @@ namespace RPG.Combat
             print($"Current weapon is {weapon.name}");
             weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
         }
+
+        public IDamageable GetTarget()
+        {
+            return _damageable;
+        }
+
+        public object CaptureState()
+        {
+            return _currentWeapon.name;
+        }
+
+        public void RestoreState(object state)
+        {
+            string weaponName = (string)state;
+            Weapon weapon = Resources.Load<Weapon>(weaponName);
+            EquipWeapon(weapon);
+        }
 #endregion
 
 #region Private Methods
@@ -111,11 +131,11 @@ namespace RPG.Combat
             {
                 if (_currentWeapon.HasProjectile())
                 {
-                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable);
+                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable,gameObject);
                 }
                 else
                 {
-                    _damageable.TakeDamage(_currentWeapon.WeaponDamage);
+                    _damageable.TakeDamage(gameObject,_currentWeapon.WeaponDamage);
                 }
             }
         }

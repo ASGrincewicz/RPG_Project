@@ -9,7 +9,7 @@ namespace RPG.SceneManagement
         [SerializeField] private float _fadeInTime = 1.0f;
         private const string _defaultSaveFile = "RPG_Save";
         private SavingSystem _savingSystem;
-
+        private Fader _fader;
         private void Awake()
         {
             _savingSystem = FindObjectOfType<SavingSystem>();
@@ -17,17 +17,17 @@ namespace RPG.SceneManagement
 
         private IEnumerator Start()
         {
-            Fader fader = FindObjectOfType<Fader>();
+            _fader = FindObjectOfType<Fader>();
             TryGetComponent(out SavingSystem savingSystem);
             if (_savingSystem.CheckIfSaveFileExists(_defaultSaveFile))
             {
-                fader.FadeOutImmediate();
+                _fader.FadeOutImmediate();
                 print("Save File Found: Fading out");
                 yield return  savingSystem.LoadLastScene(_defaultSaveFile);
             }
             else
             {
-                yield return fader.FadeIn(_fadeInTime);
+                yield return _fader.FadeIn(_fadeInTime);
                 print("No Save File Found.");
             }
         }

@@ -1,7 +1,9 @@
-﻿using Saving;
+﻿using RPG.Core;
+using RPG.Stats;
+using Saving;
 using UnityEngine;
 
-namespace RPG.Core
+namespace RPG.Attributes
 {
     [RequireComponent(typeof(Collider))]
     public class Health : MonoBehaviour, IDamageable, ISaveable
@@ -11,7 +13,25 @@ namespace RPG.Core
         private readonly int _dieTrigger = Animator.StringToHash("Die");
         public bool IsDead { get; private set; }
 
-       public void TakeDamage(float damage)
+        private void Awake()
+        {
+            if (TryGetComponent(out BaseStats baseStats))
+            {
+                _health = baseStats.GetHealth();
+            }
+        }
+
+        public float GetPercentage()
+        {
+            if (TryGetComponent(out BaseStats baseStats))
+            {
+                return 100.0f*(_health / baseStats.GetHealth());
+            }
+
+            return 0.0f;
+        }
+
+        public void TakeDamage(float damage)
         {
             _health = Mathf.Max(_health - damage, 0);
             if (_health == 0 )

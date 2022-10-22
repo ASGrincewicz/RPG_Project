@@ -17,7 +17,7 @@ namespace RPG.Attributes
         {
             if (TryGetComponent(out BaseStats baseStats))
             {
-                HealthPoints = baseStats.GetHealth();
+                HealthPoints = baseStats.GetStat(Stat.Health);
             }
         }
 
@@ -25,7 +25,7 @@ namespace RPG.Attributes
         {
             if (TryGetComponent(out BaseStats baseStats))
             {
-                return 100.0f*(HealthPoints / baseStats.GetHealth());
+                return 100.0f*(HealthPoints / baseStats.GetStat(Stat.Health));
             }
 
             return 0.0f;
@@ -62,7 +62,7 @@ namespace RPG.Attributes
         private void AwardExperience(GameObject instigator)
         {
             if (!TryGetComponent(out BaseStats baseStats)) return;
-            float xpReward = baseStats.GetExperienceReward();
+            float xpReward = baseStats.GetStat(Stat.XPReward);
             if (instigator.TryGetComponent(out Experience experience))
             {
                 experience.GainXP(xpReward);

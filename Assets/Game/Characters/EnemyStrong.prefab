@@ -9,6 +9,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 138981694647701805, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: _startingLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 138981694647701805, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: _characterClass
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1474092162873701361, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
@@ -28,13 +32,29 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1962047312162787507, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: _defaultWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 466375a3edda0c64a9413a694dffb3f6, type: 2}
+    - target: {fileID: 1962047312162787507, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: _handTransform
       value: 
       objectReference: {fileID: 2700453980521525102}
+    - target: {fileID: 1962047312162787507, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: _defaultWeaponName
+      value: Sword
+      objectReference: {fileID: 0}
     - target: {fileID: 5738878008551901848, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 01b2546c969fe814794af634cb4534f4, type: 2}
+    - target: {fileID: 5738878008565515528, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5738878008567550006, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ccae2dc6cf6f0c4479b782fedd0c8172, type: 2}
     - target: {fileID: 6300186426637956910, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_RootOrder
       value: 0

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPG.Stats
@@ -7,24 +8,52 @@ namespace RPG.Stats
     {
         [SerializeField] private ProgressionCharacterClass[] _characterClasses = null;
 
-        public int GetHealth(CharacterClass characterClass, int level)
-        {
-            foreach (ProgressionCharacterClass c in _characterClasses)
-            {
-                if (c.CharacterClass == characterClass)
-                {
-                    return c.Health[level - 1];
-                }
-            }
+        private Dictionary<CharacterClass, Dictionary<Stat, int[]>> _lookupTable;
 
-            return 0;
+        public int GetStat(Stat stat, CharacterClass characterClass, int level)
+        {
+           BuildLookup();
+
+           int[] levels = _lookupTable[characterClass][stat];
+
+           if (levels.Length < level)
+           {
+               return 0;
+           }
+
+           return levels[level - 1];
+        }
+
+        private void BuildLookup()
+        {
+            if (_lookupTable != null) return;
+
+            _lookupTable = new Dictionary<CharacterClass, Dictionary<Stat, int[]>>();
+            foreach (ProgressionCharacterClass progressionClass in _characterClasses)
+            {
+                Dictionary<Stat,int[]> statLookupTable = new Dictionary<Stat, int[]>();
+
+                foreach (ProgressionStat progressionStat in progressionClass.Stats)
+                {
+                    statLookupTable[progressionStat.Stat] = progressionStat.Levels;
+                }
+                
+                _lookupTable[progressionClass.CharacterClass] = statLookupTable;
+            }
         }
 
         [System.Serializable]
         public class ProgressionCharacterClass
         {
             [field: SerializeField] public CharacterClass CharacterClass;
-            [field: SerializeField] public int[] Health;
+            [field: SerializeField] public ProgressionStat[] Stats;
+        }
+
+        [System.Serializable]
+        public class ProgressionStat
+        {
+            [field: SerializeField] public Stat Stat;
+            [field: SerializeField] public int[] Levels;
         }
     }
 }

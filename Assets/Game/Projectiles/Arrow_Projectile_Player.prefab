@@ -87,7 +87,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 434050979, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
       propertyPath: _lifeAfterImpact
-      value: 0.5
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 434050979, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
       propertyPath: _destroyOnHit.Array.size

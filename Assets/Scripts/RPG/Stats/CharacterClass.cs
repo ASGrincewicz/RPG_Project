@@ -5,6 +5,6 @@
         Player,
         Grunt,
         Archer,
-        Mage
+        Guard_Captain
     }
 }

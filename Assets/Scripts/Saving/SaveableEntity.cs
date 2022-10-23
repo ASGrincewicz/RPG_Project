@@ -22,7 +22,7 @@ namespace Saving
             
             foreach (ISaveable saveable in GetComponents<ISaveable>())
             {
-                print($"{saveable}");
+                //print($"{saveable}");
                 state[saveable.GetType().ToString()] = saveable.CaptureState();
             }
 

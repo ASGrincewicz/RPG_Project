@@ -9,6 +9,7 @@ namespace RPG.Attributes
     public class Health : MonoBehaviour, IDamageable, ISaveable
     {
         [field: SerializeField] public float HealthPoints { get; private set; } = -1f;
+        [SerializeField] private float _regenerationPercentage = 75.0f;
         
         private readonly int _dieTrigger = Animator.StringToHash("Die");
         public bool IsDead { get; private set; }
@@ -19,6 +20,7 @@ namespace RPG.Attributes
             {
                 if (TryGetComponent(out BaseStats baseStats))
                 {
+                    baseStats.onLevelUp += RegenerateHealth;
                     HealthPoints = baseStats.GetStat(Stat.Health);
                 }
             }
@@ -41,9 +43,9 @@ namespace RPG.Attributes
             {
                 Die();
                 AwardExperience(instigator);
-                print($"{name} is dead.");
+                //print($"{name} is dead.");
             }
-            print(HealthPoints);
+            //print(HealthPoints);
         }
 
         public void Die()
@@ -70,6 +72,15 @@ namespace RPG.Attributes
             {
                 experience.GainXP(xpReward);
             }
+        }
+
+        private void RegenerateHealth()
+        {
+            if (TryGetComponent(out BaseStats baseStats))
+            {
+                float regenHP = baseStats.GetStat(Stat.Health) * (_regenerationPercentage/100.0f);
+                HealthPoints = Mathf.Max(HealthPoints, regenHP);
+            } 
         }
         
         public Vector3 GetPosition() => transform.position;

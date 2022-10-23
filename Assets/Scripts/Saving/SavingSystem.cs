@@ -33,7 +33,10 @@ namespace Saving
 
         public void Delete(string saveFile)
         {
-            File.Delete(GetPathFromSaveFile(saveFile));
+            if (File.Exists(saveFile))
+            {
+                File.Delete(GetPathFromSaveFile(saveFile));
+            }
         }
         public IEnumerator LoadLastScene(string saveFile)
         {

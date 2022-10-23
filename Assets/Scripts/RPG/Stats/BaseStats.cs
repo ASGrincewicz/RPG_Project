@@ -5,17 +5,53 @@ namespace RPG.Stats
 {
     public class BaseStats : MonoBehaviour
     {
+        [SerializeField] public int _currentLevel;
         [SerializeField][Range(1,99)] private int _startingLevel= 1;
         [SerializeField] private CharacterClass _characterClass;
         [SerializeField] private Progression _progression;
+        [SerializeField] private GameObject _levelUpParticleEffect;
         private Experience _experience;
-        
-        public float GetStat(Stat stat)
+        public event Action onLevelUp;
+
+        private void Start()
         {
-            return _progression.GetStat(stat,_characterClass, GetLevel());
+            if (TryGetComponent(out _experience) && _characterClass == CharacterClass.Player)
+            {
+                _experience.onExperienceGained += UpdateLevel;
+            }
+            _currentLevel = CalculateLevel();
         }
 
-        public int GetLevel()
+        private void UpdateLevel()
+        {
+            int newLevel = CalculateLevel();
+            if (newLevel > GetLevel())
+            {
+                _currentLevel = newLevel;
+                LevelUpEffect();
+                onLevelUp?.Invoke();
+            }
+        }
+
+        private void LevelUpEffect()
+        {
+            Instantiate(_levelUpParticleEffect, transform);
+        }
+
+        public float GetStat(Stat stat)
+        {
+            return _progression.GetStat(stat,_characterClass, CalculateLevel());
+        }
+
+        private int GetLevel()
+        {
+            if (_currentLevel < 1)
+            {
+                _currentLevel = CalculateLevel();
+            }
+            return _currentLevel;
+        }
+        public int CalculateLevel()
         {
             if (!TryGetComponent(out _experience)) return _startingLevel;
             float currentXP = _experience.GetXP();

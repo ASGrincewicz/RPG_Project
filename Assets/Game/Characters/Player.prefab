@@ -69,12 +69,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5038861256394164671, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _startingLevel
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5038861256394164671, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _characterClass
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5038861256394164671, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _levelUpParticleEffect
+      value: 
+      objectReference: {fileID: 6878747361808647451, guid: 94c3ce4614b36474e99f96f9923cccaa, type: 3}
     - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _weapon
       value: 

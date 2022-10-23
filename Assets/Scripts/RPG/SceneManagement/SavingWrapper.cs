@@ -13,23 +13,16 @@ namespace RPG.SceneManagement
         private void Awake()
         {
             _savingSystem = FindObjectOfType<SavingSystem>();
+            StartCoroutine(LoadLastScene());
         }
 
-        private IEnumerator Start()
+        private IEnumerator LoadLastScene()
         {
             _fader = FindObjectOfType<Fader>();
             TryGetComponent(out SavingSystem savingSystem);
-            if (_savingSystem.CheckIfSaveFileExists(_defaultSaveFile))
-            {
-                _fader.FadeOutImmediate();
-                print("Save File Found: Fading out");
-                yield return  savingSystem.LoadLastScene(_defaultSaveFile);
-            }
-            else
-            {
-                yield return _fader.FadeIn(_fadeInTime);
-                print("No Save File Found.");
-            }
+            _fader.FadeOutImmediate();
+            yield return savingSystem.LoadLastScene(_defaultSaveFile);
+            yield return _fader.FadeIn(_fadeInTime);
         }
 
         private void Update()

@@ -20,10 +20,7 @@ namespace RPG.Movement
 
         private void Awake()
         {
-            if (TryGetComponent(out _health))
-            {
-                print("found health component!");
-            }
+            TryGetComponent(out _health);
             TryGetComponent(out _actionScheduler);
             TryGetComponent(out _navMeshAgent);
             _transform = transform;
@@ -55,7 +52,7 @@ namespace RPG.Movement
 
         public void Cancel()
         {
-           print("Move cancelled.");
+           //print("Move cancelled.");
         }
         private void UpdateAnimator()
         {

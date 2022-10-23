@@ -30,7 +30,11 @@ namespace Saving
         {
             RestoreState(LoadFile(saveFile));
         }
-        
+
+        public void Delete(string saveFile)
+        {
+            File.Delete(GetPathFromSaveFile(saveFile));
+        }
         public IEnumerator LoadLastScene(string saveFile)
         {
             Dictionary<string, object> state = LoadFile(saveFile);

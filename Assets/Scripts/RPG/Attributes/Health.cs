@@ -8,16 +8,19 @@ namespace RPG.Attributes
     [RequireComponent(typeof(Collider))]
     public class Health : MonoBehaviour, IDamageable, ISaveable
     {
-        [field:SerializeField] public float HealthPoints { get; private set; }
+        [field: SerializeField] public float HealthPoints { get; private set; } = -1f;
         
         private readonly int _dieTrigger = Animator.StringToHash("Die");
         public bool IsDead { get; private set; }
 
         private void Awake()
         {
-            if (TryGetComponent(out BaseStats baseStats))
+            if(HealthPoints <= 0)
             {
-                HealthPoints = baseStats.GetStat(Stat.Health);
+                if (TryGetComponent(out BaseStats baseStats))
+                {
+                    HealthPoints = baseStats.GetStat(Stat.Health);
+                }
             }
         }
 

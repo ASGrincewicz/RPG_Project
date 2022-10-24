@@ -1,5 +1,4 @@
-﻿using System;
-using RPG.Attributes;
+﻿using RPG.Attributes;
 using TMPro;
 using UnityEngine;
 
@@ -34,7 +33,7 @@ namespace RPG.Combat
             }
             else
             {
-                _enemyHealthValue.text = $"{_playerFighter.GetTarget().GetPercentage():0}%";
+                _enemyHealthValue.text = $"{target.HealthPoints:0}/{target.GetMaxHealth():0}";
             }
         }
     }

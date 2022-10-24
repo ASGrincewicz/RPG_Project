@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,27 +8,27 @@ namespace RPG.Stats
     {
         [SerializeField] private ProgressionCharacterClass[] _characterClasses = null;
 
-        private Dictionary<CharacterClass, Dictionary<Stat, int[]>> _lookupTable;
+        private Dictionary<CharacterClass, Dictionary<Stat, float[]>> _lookupTable;
 
-        public int GetStat(Stat stat, CharacterClass characterClass, int level)
+        public float GetStat(Stat stat, CharacterClass characterClass, float level)
         {
            BuildLookup();
 
-           int[] levels = _lookupTable[characterClass][stat];
+           float[] levels = _lookupTable[characterClass][stat];
 
            if (levels.Length < level)
            {
                return 0;
            }
 
-           return levels[level - 1];
+           return levels[(int)(level - 1)];
         }
 
         public int GetLevels(CharacterClass characterClass, Stat stat)
         {
             BuildLookup();
             
-            int[] levels = _lookupTable[characterClass][stat];
+            float[] levels = _lookupTable[characterClass][stat];
 
             return levels.Length;
         }
@@ -38,10 +37,10 @@ namespace RPG.Stats
         {
             if (_lookupTable != null) return;
 
-            _lookupTable = new Dictionary<CharacterClass, Dictionary<Stat, int[]>>();
+            _lookupTable = new Dictionary<CharacterClass, Dictionary<Stat, float[]>>();
             foreach (ProgressionCharacterClass progressionClass in _characterClasses)
             {
-                Dictionary<Stat,int[]> statLookupTable = new Dictionary<Stat, int[]>();
+                Dictionary<Stat,float[]> statLookupTable = new Dictionary<Stat, float[]>();
 
                 foreach (ProgressionStat progressionStat in progressionClass.Stats)
                 {
@@ -63,7 +62,7 @@ namespace RPG.Stats
         public class ProgressionStat
         {
             [field: SerializeField] public Stat Stat;
-            [field: SerializeField] public int[] Levels;
+            [field: SerializeField] public float[] Levels;
         }
     }
 }

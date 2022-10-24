@@ -2,6 +2,7 @@
 using RPG.Core;
 using UnityEngine;
 using RPG.Movement;
+using RPG.Stats;
 using Saving;
 
 namespace RPG.Combat
@@ -129,13 +130,16 @@ namespace RPG.Combat
         {
             if (CanAttack(_damageable))
             {
+                TryGetComponent(out BaseStats baseStats);
+                float damage = _currentWeapon.WeaponDamage * baseStats.GetStat(Stat.DamageModifier);
                 if (_currentWeapon.HasProjectile())
                 {
-                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable,gameObject);
+                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable,gameObject,damage);
                 }
                 else
                 {
-                    _damageable.TakeDamage(gameObject,_currentWeapon.WeaponDamage);
+                   
+                    _damageable.TakeDamage(gameObject,damage);
                 }
             }
         }

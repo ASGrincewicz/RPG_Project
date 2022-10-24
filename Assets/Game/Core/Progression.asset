@@ -16,24 +16,78 @@ MonoBehaviour:
   - CharacterClass: 0
     Stats:
     - Stat: 0
-      Levels: 3200000064000000c80000002c01000090010000f4010000
+      Levels:
+      - 50
+      - 100
+      - 200
+      - 300
+      - 400
+      - 500
     - Stat: 2
-      Levels: 0a000000140000001e0000002800000032000000
+      Levels:
+      - 10
+      - 20
+      - 30
+      - 40
+      - 50
+    - Stat: 3
+      Levels:
+      - 1
+      - 1.25
+      - 1.5
+      - 1.75
+      - 2
   - CharacterClass: 1
     Stats:
     - Stat: 0
-      Levels: 140000001e00000028000000
+      Levels:
+      - 20
+      - 30
+      - 40
     - Stat: 1
-      Levels: 0a0000000f00000014000000
+      Levels:
+      - 10
+      - 15
+      - 20
+    - Stat: 3
+      Levels:
+      - 1
+      - 1.25
+      - 1.5
   - CharacterClass: 2
     Stats:
     - Stat: 0
-      Levels: 0f0000001900000023000000
+      Levels:
+      - 15
+      - 25
+      - 35
     - Stat: 1
-      Levels: 0f0000001400000019000000
+      Levels:
+      - 15
+      - 20
+      - 25
+    - Stat: 3
+      Levels:
+      - 1
+      - 1.25
+      - 1.5
   - CharacterClass: 3
     Stats:
     - Stat: 0
-      Levels: 1e00000028000000320000003c000000
+      Levels:
+      - 30
+      - 40
+      - 50
+      - 60
     - Stat: 1
-      Levels: 19000000230000002d00000037000000
+      Levels:
+      - 25
+      - 35
+      - 45
+      - 55
+    - Stat: 3
+      Levels:
+      - 1
+      - 1.25
+      - 1.5
+      - 1.75

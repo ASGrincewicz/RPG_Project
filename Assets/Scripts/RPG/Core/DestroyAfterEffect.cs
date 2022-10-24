@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using UnityEngine;
 
 namespace RPG.Core

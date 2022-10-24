@@ -10,6 +10,7 @@ namespace RPG.Attributes
     {
         [field: SerializeField] public float HealthPoints { get; private set; } = -1f;
         [SerializeField] private float _regenerationPercentage = 75.0f;
+        private BaseStats _baseStats;
         
         private readonly int _dieTrigger = Animator.StringToHash("Die");
         public bool IsDead { get; private set; }
@@ -18,19 +19,24 @@ namespace RPG.Attributes
         {
             if(HealthPoints <= 0)
             {
-                if (TryGetComponent(out BaseStats baseStats))
+                if (TryGetComponent(out _baseStats))
                 {
-                    baseStats.onLevelUp += RegenerateHealth;
-                    HealthPoints = baseStats.GetStat(Stat.Health);
+                    _baseStats.onLevelUp += RegenerateHealth;
+                    HealthPoints = _baseStats.GetStat(Stat.Health);
                 }
             }
         }
 
+        public float GetMaxHealth()
+        {
+            return _baseStats.GetStat(Stat.Health);
+        }
+
         public float GetPercentage()
         {
-            if (TryGetComponent(out BaseStats baseStats))
+            if (_baseStats != null)
             {
-                return 100.0f*(HealthPoints / baseStats.GetStat(Stat.Health));
+                return 100.0f*(HealthPoints / _baseStats.GetStat(Stat.Health));
             }
 
             return 0.0f;
@@ -38,14 +44,13 @@ namespace RPG.Attributes
 
         public void TakeDamage(GameObject instigator, float damage)
         {
+            print($"{gameObject.name} took damage: {damage}.");
             HealthPoints = Mathf.Max(HealthPoints - damage, 0);
             if (HealthPoints == 0 )
             {
                 Die();
                 AwardExperience(instigator);
-                //print($"{name} is dead.");
             }
-            //print(HealthPoints);
         }
 
         public void Die()
@@ -61,13 +66,12 @@ namespace RPG.Attributes
             {
                 actionScheduler.CancelAction();
             }
-            //Destroy(gameObject,15.0f);
         }
 
         private void AwardExperience(GameObject instigator)
         {
-            if (!TryGetComponent(out BaseStats baseStats)) return;
-            float xpReward = baseStats.GetStat(Stat.XPReward);
+            if (_baseStats == null) return;
+            float xpReward = _baseStats.GetStat(Stat.XPReward);
             if (instigator.TryGetComponent(out Experience experience))
             {
                 experience.GainXP(xpReward);
@@ -76,11 +80,11 @@ namespace RPG.Attributes
 
         private void RegenerateHealth()
         {
-            if (TryGetComponent(out BaseStats baseStats))
-            {
-                float regenHP = baseStats.GetStat(Stat.Health) * (_regenerationPercentage/100.0f);
-                HealthPoints = Mathf.Max(HealthPoints, regenHP);
-            } 
+            if (_baseStats == null) return;
+            
+            float regenHP = _baseStats.GetStat(Stat.Health) * (_regenerationPercentage/100.0f);
+            HealthPoints = Mathf.Max(HealthPoints, regenHP);
+            
         }
         
         public Vector3 GetPosition() => transform.position;

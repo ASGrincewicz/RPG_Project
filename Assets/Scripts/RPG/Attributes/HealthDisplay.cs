@@ -1,6 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using RPG.Stats;
 using TMPro;
 using UnityEngine;
 
@@ -10,7 +8,7 @@ namespace RPG.Attributes
     {
         [SerializeField] private TMP_Text _healthValueText;
         private Health _health;
-
+       
         private void Awake()
         {
             GameObject player = GameObject.FindWithTag("Player");
@@ -22,7 +20,7 @@ namespace RPG.Attributes
 
         private void Update()
         {
-            _healthValueText.text = $"{_health.GetPercentage():0}%";
+            _healthValueText.text = $"{_health.HealthPoints}/{_health.GetMaxHealth()}";
         }
     }
 }

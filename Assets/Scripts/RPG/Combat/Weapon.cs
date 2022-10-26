@@ -10,6 +10,7 @@ namespace RPG.Combat
         [SerializeField] private GameObject _weaponPrefab;
         
         [field: SerializeField] public float WeaponDamage;
+        [field: SerializeField] public float PercentageBonus = 0.0f;
         [field: SerializeField] public float WeaponRange;
         [field: SerializeField] public float TimeBetweenAttacks;
         [field: SerializeField] public bool IsRightHanded = true;

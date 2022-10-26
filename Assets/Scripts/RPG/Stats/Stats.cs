@@ -5,6 +5,6 @@
         Health,
         XPReward,
         XPtoLevelUp,
-        DamageModifier
+        Damage
     }
 }

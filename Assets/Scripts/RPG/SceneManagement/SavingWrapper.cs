@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Saving;
 
@@ -13,15 +14,17 @@ namespace RPG.SceneManagement
         private void Awake()
         {
             _savingSystem = FindObjectOfType<SavingSystem>();
-            StartCoroutine(LoadLastScene());
+            if (_savingSystem.CheckIfSaveFileExists(_defaultSaveFile))
+            {
+                StartCoroutine(LoadLastScene());
+            }
         }
 
         private IEnumerator LoadLastScene()
         {
+            yield return _savingSystem.LoadLastScene(_defaultSaveFile);
             _fader = FindObjectOfType<Fader>();
-            TryGetComponent(out SavingSystem savingSystem);
             _fader.FadeOutImmediate();
-            yield return savingSystem.LoadLastScene(_defaultSaveFile);
             yield return _fader.FadeIn(_fadeInTime);
         }
 
@@ -53,8 +56,9 @@ namespace RPG.SceneManagement
             _savingSystem.Load(_defaultSaveFile);
         }
 
-        public void Delete()
+        private void Delete()
         {
+            if (!_savingSystem.CheckIfSaveFileExists(_defaultSaveFile)) return;
             _savingSystem.Delete(_defaultSaveFile);
         }
     }

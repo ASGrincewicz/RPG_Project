@@ -20,7 +20,7 @@ namespace RPG.Attributes
 
         private void Update()
         {
-            _healthValueText.text = $"{_health.HealthPoints}/{_health.GetMaxHealth()}";
+            _healthValueText.text = $"{_health.HealthPoints.value:00}/{_health.GetMaxHealth()}";
         }
     }
 }

@@ -27,14 +27,7 @@ namespace RPG.Combat
             }
 
             IDamageable target = _playerFighter.GetTarget();
-            if (target == null)
-            {
-                _enemyHealthValue.text = $"No Target";
-            }
-            else
-            {
-                _enemyHealthValue.text = $"{target.HealthPoints:0}/{target.GetMaxHealth():0}";
-            }
+            _enemyHealthValue.text = target == null ? $"No Target" : $"{target.HealthPoints.value:0}/{target.GetMaxHealth():0}";
         }
     }
 }

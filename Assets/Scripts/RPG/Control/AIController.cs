@@ -1,3 +1,4 @@
+using GameDevTV.Utils;
 using RPG.Attributes;
 using RPG.Combat;
 using RPG.Core;
@@ -18,11 +19,9 @@ namespace RPG.Control
         [SerializeField] private float _waypointDwellTime = 2.0f;
         
 
-        private Vector3 _guardPosition;
+        private LazyValue<Vector3> _guardPosition;
         private int _currentWaypointIndex = 0;
-
         private float _timeSinceLastSawPlayer = Mathf.Infinity;
-
         private float _timeAtWaypoint = Mathf.Infinity;
         //Cached References
         private Fighter _fighter;
@@ -53,12 +52,19 @@ namespace RPG.Control
             {
                 Debug.LogError("Health not found!");
             }
-            _transform = transform;
-            _guardPosition = _transform.position;
+
+            _guardPosition = new LazyValue<Vector3>(GetGuardPosition);
+        }
+
+        private Vector3 GetGuardPosition()
+        {
+            return transform.position;
         }
 
         private void Start()
         {
+            _transform = transform;
+            _guardPosition.ForceInit();
             _player = GameObject.FindWithTag("Player");
             if (_player == null)
             {
@@ -96,7 +102,7 @@ namespace RPG.Control
 
         private void PatrolBehavior()
         {
-            Vector3 nextPosition = _guardPosition;
+            Vector3 nextPosition = _guardPosition.value;
             if (_patrolPath != null)
             {
                //Change speed to Patrol Speed.

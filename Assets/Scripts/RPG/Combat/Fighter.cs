@@ -1,4 +1,7 @@
-﻿using RPG.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using GameDevTV.Utils;
+using RPG.Attributes;
 using RPG.Core;
 using UnityEngine;
 using RPG.Movement;
@@ -7,14 +10,14 @@ using Saving;
 
 namespace RPG.Combat
 {
-    public class Fighter : MonoBehaviour, IAction, ISaveable
+    public class Fighter : MonoBehaviour, IAction, ISaveable, IModifierProvider
     {
         [Header("Weapon Configuration")] 
         [SerializeField] private string _defaultWeaponName = "Unarmed";
         [SerializeField] private Weapon _defaultWeapon = null;
         [SerializeField] private Transform _rightHandTransform = null;
         [SerializeField] private Transform _leftHandTransform = null;
-        private Weapon _currentWeapon = null;
+        private LazyValue<Weapon> _currentWeapon;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
         private IDamageable _damageable;
@@ -27,13 +30,20 @@ namespace RPG.Combat
 #region Unity Events
         private void Awake()
         {
+            _currentWeapon = new LazyValue<Weapon>(SetupDefaultWeapon);
             TryGetComponent(out _mover);
             TryGetComponent(out _animator);
             TryGetComponent(out _actionScheduler);
-            if (_currentWeapon == null)
-            {
-                EquipWeapon(_defaultWeapon);
-            }
+        }
+
+        private Weapon SetupDefaultWeapon()
+        {
+            AttachWeapon(_defaultWeapon);
+            return _defaultWeapon;
+        }
+        private void Start()
+        {
+           _currentWeapon.ForceInit();
         }
 
         private void Update()
@@ -81,8 +91,12 @@ namespace RPG.Combat
         }
         public void EquipWeapon(Weapon weapon)
         {
-            _currentWeapon = weapon;
-            //print($"Current weapon is {weapon.name}");
+            _currentWeapon.value = weapon;
+            AttachWeapon(weapon);
+        }
+
+        private void AttachWeapon(Weapon weapon)
+        {
             weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
         }
 
@@ -91,9 +105,30 @@ namespace RPG.Combat
             return _damageable;
         }
 
+        public IEnumerable<float> GetAdditiveModifiers(Stat stat)
+        {
+            if (stat == Stat.Damage)
+            {
+                yield return _currentWeapon.value.WeaponDamage;
+            }
+        }
+
+        public IEnumerable<float> GetPercentageModifiers(Stat stat)
+        {
+            if (stat == Stat.Damage)
+            {
+                yield return _currentWeapon.value.PercentageBonus;
+            }
+        }
+
         public object CaptureState()
         {
-            return _currentWeapon.name;
+            if (_currentWeapon != null)
+            {
+                return _currentWeapon.value.name;
+            }
+
+            return _defaultWeapon.name;
         }
 
         public void RestoreState(object state)
@@ -108,14 +143,14 @@ namespace RPG.Combat
 
         private bool GetIsInRange(Transform target)
         {
-            return Vector3.Distance(transform.position, target.position) < _currentWeapon.WeaponRange;
+            return Vector3.Distance(transform.position, target.position) < _currentWeapon.value.WeaponRange;
         }
 
         private void AttackBehaviour()
         {
             transform.LookAt(_damageable.GetTransform());
             //Throttle Attack Animation
-            if (_timeSinceLastAttack > _currentWeapon.TimeBetweenAttacks && !_damageable.IsDead)
+            if (_timeSinceLastAttack > _currentWeapon.value.TimeBetweenAttacks && !_damageable.IsDead)
             {
                 TriggerAttack();
                 _timeSinceLastAttack = 0f;
@@ -131,10 +166,10 @@ namespace RPG.Combat
             if (CanAttack(_damageable))
             {
                 TryGetComponent(out BaseStats baseStats);
-                float damage = _currentWeapon.WeaponDamage * baseStats.GetStat(Stat.DamageModifier);
-                if (_currentWeapon.HasProjectile())
+                float damage = baseStats.GetStat(Stat.Damage);
+                if (_currentWeapon.value.HasProjectile())
                 {
-                    _currentWeapon.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable,gameObject,damage);
+                    _currentWeapon.value.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable,gameObject,damage);
                 }
                 else
                 {

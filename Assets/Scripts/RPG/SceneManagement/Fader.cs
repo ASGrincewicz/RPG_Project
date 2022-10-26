@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,9 +10,14 @@ namespace RPG.SceneManagement
         [SerializeField] private float _fadeTime;
         private CanvasGroup _canvasGroup;
 
-       public void FadeOutImmediate()
+        private void Awake()
         {
-           if(TryGetComponent(out _canvasGroup)) _canvasGroup.alpha = 1;
+            TryGetComponent(out _canvasGroup);
+        }
+
+        public void FadeOutImmediate()
+        {
+            _canvasGroup.alpha = 1;
         }
 
         public IEnumerator FadeOut(float time)

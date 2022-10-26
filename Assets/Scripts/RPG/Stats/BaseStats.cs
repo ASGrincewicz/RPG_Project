@@ -1,25 +1,46 @@
 using System;
+using GameDevTV.Utils;
 using UnityEngine;
 
 namespace RPG.Stats
 {
     public class BaseStats : MonoBehaviour
     {
-        [SerializeField] public int _currentLevel;
+        public LazyValue<int> _currentLevel;
         [SerializeField][Range(1,99)] private int _startingLevel= 1;
         [SerializeField] private CharacterClass _characterClass;
         [SerializeField] private Progression _progression;
         [SerializeField] private GameObject _levelUpParticleEffect;
+        [SerializeField] private bool _shouldUseModifiers = false;
         private Experience _experience;
         public event Action onLevelUp;
 
-        private void Start()
+        private void Awake()
         {
-            if (TryGetComponent(out _experience) && _characterClass == CharacterClass.Player)
+            TryGetComponent(out _experience);
+            _currentLevel = new LazyValue<int>(CalculateLevel);
+        }
+
+        private void OnEnable()
+        {
+            if (_experience != null && _characterClass == CharacterClass.Player)
             {
                 _experience.onExperienceGained += UpdateLevel;
             }
-            _currentLevel = CalculateLevel();
+        }
+
+        private void OnDisable()
+        {
+            if (_experience != null && _characterClass == CharacterClass.Player)
+            {
+                _experience.onExperienceGained -= UpdateLevel;
+            }
+        }
+
+        private void Start()
+        {
+           _currentLevel.ForceInit();
+           // _currentLevel = CalculateLevel();
         }
 
         private void UpdateLevel()
@@ -27,7 +48,7 @@ namespace RPG.Stats
             int newLevel = CalculateLevel();
             if (newLevel > GetLevel())
             {
-                _currentLevel = newLevel;
+                _currentLevel.value = newLevel;
                 LevelUpEffect();
                 onLevelUp?.Invoke();
             }
@@ -40,18 +61,53 @@ namespace RPG.Stats
 
         public float GetStat(Stat stat)
         {
-            return _progression.GetStat(stat,_characterClass, CalculateLevel());
+            return (GetBaseStat(stat) + GetAdditiveModifier(stat)) * (1 + GetPercentageModifier(stat) / 100);
         }
 
-        private int GetLevel()
+        private float GetBaseStat(Stat stat)
         {
-            if (_currentLevel < 1)
-            {
-                _currentLevel = CalculateLevel();
-            }
-            return _currentLevel;
+            return _progression.GetStat(stat, _characterClass, GetLevel());
         }
-        public int CalculateLevel()
+
+        public int GetLevel()
+        {
+            if (_currentLevel.value < 1)
+            {
+                _currentLevel.value = CalculateLevel();
+            }
+            return _currentLevel.value;
+        }
+
+        private float GetAdditiveModifier(Stat stat)
+        {
+            if (!_shouldUseModifiers) return 0;
+            float total = 0;
+            foreach (IModifierProvider provider in GetComponents<IModifierProvider>())
+            {
+                foreach (float modifier in provider.GetAdditiveModifiers(stat))
+                {
+                    total += modifier;
+                }
+            }
+
+            return total;
+        }
+
+        private float GetPercentageModifier(Stat stat)
+        {
+            if (!_shouldUseModifiers) return 0;
+            float total = 0;
+            foreach (IModifierProvider provider in GetComponents<IModifierProvider>())
+            {
+                foreach (float modifier in provider.GetPercentageModifiers(stat))
+                {
+                    total += modifier;
+                }
+            }
+
+            return total;
+        }
+        private int CalculateLevel()
         {
             if (!TryGetComponent(out _experience)) return _startingLevel;
             float currentXP = _experience.GetXP();

@@ -55,6 +55,7 @@ namespace RPG.Stats
         public class ProgressionCharacterClass
         {
             [field: SerializeField] public CharacterClass CharacterClass;
+           
             [field: SerializeField] public ProgressionStat[] Stats;
         }
 
@@ -63,6 +64,7 @@ namespace RPG.Stats
         {
             [field: SerializeField] public Stat Stat;
             [field: SerializeField] public float[] Levels;
+            
         }
     }
 }

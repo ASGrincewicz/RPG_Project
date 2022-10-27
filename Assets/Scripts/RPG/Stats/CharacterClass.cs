@@ -5,6 +5,6 @@
         Player,
         Grunt,
         Archer,
-        Guard_Captain
+        Heavy_Solider
     }
 }

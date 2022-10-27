@@ -5,6 +5,6 @@
         Player,
         Grunt,
         Archer,
-        Mage
+        Heavy_Solider
     }
 }

@@ -10,6 +10,7 @@ namespace RPG.Combat
         [SerializeField] private GameObject _weaponPrefab;
         
         [field: SerializeField] public float WeaponDamage;
+        [field: SerializeField] public float PercentageBonus = 0.0f;
         [field: SerializeField] public float WeaponRange;
         [field: SerializeField] public float TimeBetweenAttacks;
         [field: SerializeField] public bool IsRightHanded = true;
@@ -38,12 +39,12 @@ namespace RPG.Combat
             }
         }
 
-        public void LaunchProjectile(Transform rightHand, Transform leftHand, IDamageable target, GameObject instigator)
+        public void LaunchProjectile(Transform rightHand, Transform leftHand, IDamageable target, GameObject instigator, float calculatedDamage)
         {
             Projectile projectileInstance = Instantiate(Projectile, GetHandTransform(rightHand, leftHand).position,
                 Quaternion.identity);
             projectileInstance.transform.position = GetHandTransform(rightHand, leftHand).position;
-            projectileInstance.SetTargetAndDamage(target,instigator,WeaponDamage);
+            projectileInstance.SetTargetAndDamage(target,instigator,calculatedDamage);
         }
 
         public bool HasProjectile()

@@ -30,18 +30,23 @@ namespace Saving
         {
             RestoreState(LoadFile(saveFile));
         }
-        
+
+        public void Delete(string saveFile)
+        {
+            if (File.Exists(saveFile))
+            {
+                File.Delete(GetPathFromSaveFile(saveFile));
+            }
+        }
         public IEnumerator LoadLastScene(string saveFile)
         {
             Dictionary<string, object> state = LoadFile(saveFile);
-            int buildIndex = (int)state["lastSceneBuildIndex"];
+            int buildIndex = SceneManager.GetActiveScene().buildIndex;
             if (state.ContainsKey("lastSceneBuildIndex"))
             {
-                if (buildIndex != SceneManager.GetActiveScene().buildIndex)
-                {
-                    yield return SceneManager.LoadSceneAsync(buildIndex);
-                }
+                buildIndex = (int)state["lastSceneBuildIndex"];
             }
+            yield return SceneManager.LoadSceneAsync(buildIndex);
             RestoreState(state);
         }
 
@@ -70,11 +75,10 @@ namespace Saving
             {
                 return new Dictionary<string, object>();
             }
-           using (FileStream stream = File.Open(path,FileMode.Open))
-           {
-               BinaryFormatter formatter = new BinaryFormatter();
-               return (Dictionary<string, object>)formatter.Deserialize(stream);
-           }
+
+            using FileStream stream = File.Open(path,FileMode.Open);
+            BinaryFormatter formatter = new BinaryFormatter();
+            return (Dictionary<string, object>)formatter.Deserialize(stream);
         }
 
         private void CaptureState(Dictionary<string, object> state)

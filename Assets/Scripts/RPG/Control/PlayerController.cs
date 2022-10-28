@@ -14,6 +14,22 @@ namespace RPG.Control
         private Camera _mainCamera;
         private Health _health;
         private IDamageable _damageable;
+        
+        private enum CursorType
+        {
+            None,
+            Movement,
+            Combat
+        }
+        [System.Serializable]
+        private struct CursorMapping
+        {
+            public CursorType cursorType;
+            public Texture2D texture;
+            public Vector2 hotspot;
+        }
+
+        [SerializeField] private CursorMapping[] _cursorMappings;
 
         private void Awake()
         {
@@ -40,31 +56,17 @@ namespace RPG.Control
 
         private void OnEnable()
         {
-            try
+            if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
             {
-                if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
-                {
-                    navMeshAgent.enabled = true;
-                }
-            }
-            catch
-            {
-                Debug.LogError("Nav Mesh Agent not found!");
+                navMeshAgent.enabled = true;
             }
         }
 
         private void OnDisable()
         {
-            try
+            if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
             {
-                if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
-                {
-                    navMeshAgent.enabled = false;
-                }
-            }
-            catch
-            {
-                Debug.LogError("Nav Mesh Agent not found!");
+                navMeshAgent.enabled = false;
             }
         }
 
@@ -73,6 +75,7 @@ namespace RPG.Control
             if (_health.IsDead) return;
             if(InteractWithCombat()) return;
             if (InteractWithMovement()) return;
+            SetCursor(CursorType.None);
         }
 
         private bool InteractWithMovement()
@@ -85,6 +88,7 @@ namespace RPG.Control
                 {
                     _mover.StartMoveAction(hitInfo.point,1);
                 }
+                SetCursor(CursorType.Movement);
                 return true;
             }
             return false;
@@ -105,7 +109,7 @@ namespace RPG.Control
                     //Attack
                     _fighter.Attack(target);
                 }
-
+                SetCursor(CursorType.Combat);
                 return true;
             }
 
@@ -115,6 +119,24 @@ namespace RPG.Control
         private Ray GetMouseRay()
         {
             return _mainCamera.ScreenPointToRay(Input.mousePosition);
+        }
+
+        private void SetCursor(CursorType type)
+        {
+            CursorMapping mapping = GetCursorMapping(type);
+            Cursor.SetCursor(mapping.texture, mapping.hotspot, CursorMode.Auto);
+        }
+
+        private CursorMapping GetCursorMapping(CursorType type)
+        {
+            foreach (CursorMapping mapping in _cursorMappings)
+            {
+                if (mapping.cursorType == type)
+                {
+                    return mapping;
+                }
+            }
+            return _cursorMappings[0];
         }
     }
 }

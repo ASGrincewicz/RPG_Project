@@ -16,8 +16,6 @@ namespace RPG.Cinematics
             {
                 director.Play();
             }
-            _hasPlayed = true;
-            print($"Cinematic: Has Played ={_hasPlayed}.");
         }
 
         public object CaptureState()

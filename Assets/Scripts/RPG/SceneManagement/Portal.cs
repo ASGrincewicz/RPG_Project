@@ -55,6 +55,7 @@ namespace RPG.SceneManagement
             savingWrapper.Save();
             
             yield return _fadeDelay;
+            GameObject.FindWithTag("Player").TryGetComponent(out newPlayerController);
             newPlayerController.enabled = true;
             yield return fader.FadeIn(_fadeInTime);
            
@@ -64,10 +65,12 @@ namespace RPG.SceneManagement
         private void UpdatePlayer(Portal portal)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
-            player.TryGetComponent(out NavMeshAgent navMeshAgent);
-            navMeshAgent.enabled = false;
-            navMeshAgent.Warp(portal._spawnPoint.position);
-            player.transform.rotation = portal._spawnPoint.rotation;
+            if(player.TryGetComponent(out NavMeshAgent navMeshAgent))
+            {
+                navMeshAgent.enabled = false;
+                navMeshAgent.Warp(portal._spawnPoint.position);
+                player.transform.rotation = portal._spawnPoint.rotation;
+            }
         }
 
         private Portal GetExitPortal()

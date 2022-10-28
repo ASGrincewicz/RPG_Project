@@ -82,7 +82,7 @@ namespace RPG.Combat
         
         public bool CanAttack(IDamageable target)
         {
-            if (target == null)
+            if (target == null || target == this.GetComponent<IDamageable>())
             {
                 return false;
             }
@@ -173,7 +173,6 @@ namespace RPG.Combat
                 }
                 else
                 {
-                   
                     _damageable.TakeDamage(gameObject,damage);
                 }
             }

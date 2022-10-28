@@ -1,5 +1,7 @@
 ﻿using System;
 using GameDevTV.Utils;
+using RPG.Combat;
+using RPG.Control;
 using RPG.Core;
 using RPG.Stats;
 using Saving;
@@ -8,7 +10,7 @@ using UnityEngine;
 namespace RPG.Attributes
 {
     [RequireComponent(typeof(Collider))]
-    public class Health : MonoBehaviour, IDamageable, ISaveable
+    public class Health : MonoBehaviour,IDamageable, IRaycastable, ISaveable
     {
         [field: SerializeField] public LazyValue<float> HealthPoints { get; private set; }
         [field:SerializeField] public bool IsDead { get; private set; }
@@ -135,6 +137,27 @@ namespace RPG.Attributes
                 return capsuleCollider;
             } 
             return null;
+        }
+
+        public bool HandleRaycast(PlayerController controller)
+        {
+            controller.TryGetComponent(out Fighter fighter);
+            if (!fighter.CanAttack(this))
+            {
+                return false;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                fighter.Attack(this);
+            }
+
+            return true;
+        }
+
+        public CursorType GetCursorType()
+        {
+            return CursorType.Combat;
         }
 
         public object CaptureState()

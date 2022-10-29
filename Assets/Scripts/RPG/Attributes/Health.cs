@@ -1,17 +1,18 @@
-﻿using System;
-using GameDevTV.Utils;
+﻿using GameDevTV.Utils;
 using RPG.Combat;
 using RPG.Control;
 using RPG.Core;
 using RPG.Stats;
 using Saving;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace RPG.Attributes
 {
     [RequireComponent(typeof(Collider))]
     public class Health : MonoBehaviour,IDamageable, IRaycastable, ISaveable
     {
+        [SerializeField] private UnityEvent<float> _takeDamage;
         [field: SerializeField] public LazyValue<float> HealthPoints { get; private set; }
         [field:SerializeField] public bool IsDead { get; private set; }
         [SerializeField] private float _regenerationPercentage = 75.0f;
@@ -75,6 +76,7 @@ namespace RPG.Attributes
         public void TakeDamage(GameObject instigator, float damage)
         {
             //print($"{gameObject.name} took damage: {damage:0.00}.");
+            _takeDamage?.Invoke(damage);
             HealthPoints.value = Mathf.Max(HealthPoints.value - damage, 0);
             if (HealthPoints.value == 0 )
             {

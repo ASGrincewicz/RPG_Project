@@ -3647,6 +3647,14 @@ PrefabInstance:
       propertyPath: _regenerationPercentage
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 8175924666616366869, guid: cdc0dd28b9209d94bade0b84007e4331, type: 3}
+      propertyPath: _takeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8175924666616366869, guid: cdc0dd28b9209d94bade0b84007e4331, type: 3}
+      propertyPath: _takeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9095345500449334359, guid: cdc0dd28b9209d94bade0b84007e4331, type: 3}
       propertyPath: _weaponRange
       value: 1

@@ -1,10 +1,12 @@
 using System;
+using System.Numerics;
 using RPG.Attributes;
 using RPG.Combat;
 using UnityEngine;
 using RPG.Movement;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
+using Vector3 = UnityEngine.Vector3;
 
 namespace RPG.Control
 {
@@ -19,6 +21,7 @@ namespace RPG.Control
 
         [SerializeField] private CursorMapping[] _cursorMappings;
         [SerializeField] private float _maxNavMeshProjectionDistance = 1.0f;
+        [SerializeField] private float _maxNavMeshPathLength = 10.0f;
 
         private void Awake()
         {
@@ -63,8 +66,7 @@ namespace RPG.Control
         {
             if (InteractWithUI()) return;
             if (_health.IsDead) return;
-           // if(InteractWithCombat()) return;
-           if (InteractWithComponent()) return;
+            if (InteractWithComponent()) return;
             if (InteractWithMovement()) return;
             SetCursor(CursorType.None);
         }
@@ -95,6 +97,11 @@ namespace RPG.Control
 
             foreach (RaycastHit hit in hits)
             {
+                //Test for distance like with Movement code
+                Vector3 target = hit.point;
+                bool hasHit = RaycastNavMesh(out target);
+                if (!hasHit && !_fighter.GetIsInRange(target)) return false;
+                //
                 IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
                 foreach (IRaycastable raycastable in raycastables)
                 {
@@ -140,7 +147,25 @@ namespace RPG.Control
             //return true if found
             if (!hasCastToNavMesh) return false;
             target = navMeshHit.position;
+
+            NavMeshPath path = new NavMeshPath();
+            bool hasPath = NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, path);
+            if (!hasPath) return false;
+            if (path.status != NavMeshPathStatus.PathComplete) return false;
+            if (GetPathLength(path) > _maxNavMeshPathLength) return false;
+            
             return true;
+        }
+
+        private float GetPathLength(NavMeshPath path)
+        {
+            float total = 0.0f;
+            if (path.corners.Length < 2) return total;
+            for (int i = 0; i < path.corners.Length -1; i++)
+            {
+                total += Vector3.Distance(path.corners[i], path.corners[i + 1]);
+            }
+            return total;
         }
         
         private Ray GetMouseRay()

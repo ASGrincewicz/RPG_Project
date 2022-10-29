@@ -52,7 +52,7 @@ namespace RPG.Combat
             if (_damageable == null) return;
             if (_damageable.IsDead) return;
 
-            if (!GetIsInRange(_damageable.GetTransform()))
+            if (!GetIsInRange(_damageable.GetPosition()))
             {
                 _mover.MoveTo(_damageable.GetPosition(),1f);
             }
@@ -95,9 +95,11 @@ namespace RPG.Combat
             AttachWeapon(weapon);
         }
 
-        private void AttachWeapon(Weapon weapon)
+       
+        
+        public bool GetIsInRange(Vector3 targetPosition)
         {
-            weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
+            return Vector3.Distance(transform.position, targetPosition) < _currentWeapon.value.WeaponRange;
         }
 
         public IDamageable GetTarget()
@@ -141,12 +143,11 @@ namespace RPG.Combat
 
 #region Private Methods
 
-        private bool GetIsInRange(Transform target)
+        private void AttachWeapon(Weapon weapon)
         {
-            return Vector3.Distance(transform.position, target.position) < _currentWeapon.value.WeaponRange;
+            weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
         }
-
-        private void AttackBehaviour()
+       private void AttackBehaviour()
         {
             transform.LookAt(_damageable.GetTransform());
             //Throttle Attack Animation

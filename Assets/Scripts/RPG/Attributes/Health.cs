@@ -54,14 +54,6 @@ namespace RPG.Attributes
         private void Start()
         {
             HealthPoints.ForceInit();
-            /*if (_baseStats != null && _state == 0 && !IsDead)
-            {
-                HealthPoints.value = _baseStats.GetStat(Stat.Health);                                                                         
-            }
-            else if(HealthPoints.value <= 0 ||_baseStats == null || IsDead)
-            {
-                HealthPoints.value = 0;
-            }*/
         }
 
         public float GetMaxHealth()
@@ -82,7 +74,7 @@ namespace RPG.Attributes
 
         public void TakeDamage(GameObject instigator, float damage)
         {
-            print($"{gameObject.name} took damage: {damage:0.00}.");
+            //print($"{gameObject.name} took damage: {damage:0.00}.");
             HealthPoints.value = Mathf.Max(HealthPoints.value - damage, 0);
             if (HealthPoints.value == 0 )
             {

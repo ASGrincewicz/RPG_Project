@@ -13,6 +13,8 @@ namespace RPG.Attributes
     public class Health : MonoBehaviour,IDamageable, IRaycastable, ISaveable
     {
         [SerializeField] private UnityEvent<float> _takeDamage;
+        [SerializeField] private UnityEvent _onDeath;
+        [SerializeField] private UnityEvent _onRaycasted;
         [field: SerializeField] public LazyValue<float> HealthPoints { get; private set; }
         [field:SerializeField] public bool IsDead { get; private set; }
         [SerializeField] private float _regenerationPercentage = 75.0f;
@@ -67,20 +69,26 @@ namespace RPG.Attributes
         {
             if (_baseStats != null)
             {
-                return 100.0f*(HealthPoints.value / _baseStats.GetStat(Stat.Health));
+                return 100.0f*GetFraction();
             }
 
             return 0.0f;
         }
 
+        public float GetFraction()
+        {
+            return HealthPoints.value / _baseStats.GetStat(Stat.Health);
+        }
+
         public void TakeDamage(GameObject instigator, float damage)
         {
             //print($"{gameObject.name} took damage: {damage:0.00}.");
-            _takeDamage?.Invoke(damage);
             HealthPoints.value = Mathf.Max(HealthPoints.value - damage, 0);
+            _takeDamage?.Invoke(damage);
             if (HealthPoints.value == 0 )
             {
                 Die();
+                _onDeath?.Invoke();
                 AwardExperience(instigator);
             }
         }
@@ -135,6 +143,7 @@ namespace RPG.Attributes
 
         public bool HandleRaycast(PlayerController controller)
         {
+            if(!IsDead) _onRaycasted?.Invoke();
             controller.TryGetComponent(out Fighter fighter);
             if (!fighter.CanAttack(this))
             {

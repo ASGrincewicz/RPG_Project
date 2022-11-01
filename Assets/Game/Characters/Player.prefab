@@ -83,6 +83,10 @@ PrefabInstance:
       propertyPath: _levelUpParticleEffect
       value: 
       objectReference: {fileID: 6878747361808647451, guid: 94c3ce4614b36474e99f96f9923cccaa, type: 3}
+    - target: {fileID: 6302592280041917782, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _weapon
       value: 
@@ -159,6 +163,9 @@ MonoBehaviour:
     hotspot: {x: 0, y: 0}
   - cursorType: 4
     texture: {fileID: 2800000, guid: 2e71a8202d3b4a3448ec85ced5a40265, type: 3}
+    hotspot: {x: 0, y: 0}
+  - cursorType: 6
+    texture: {fileID: 2800000, guid: 7d4a349e204be984cbd483b7ba288543, type: 3}
     hotspot: {x: 0, y: 0}
   _maxNavMeshProjectionDistance: 10
   _maxNavMeshPathLength: 10

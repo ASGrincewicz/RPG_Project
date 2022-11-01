@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace RPG.SceneManagement
 {
-    public class Portal : MonoBehaviour
+    public class Portal : MonoBehaviour, IRaycastable
     {
         public enum DestinationIdentifier
         {
@@ -85,6 +85,16 @@ namespace RPG.SceneManagement
                 }
             }
             return null;
+        }
+
+        public bool HandleRaycast(PlayerController controller)
+        {
+            return true;
+        }
+
+        public CursorType GetCursorType()
+        {
+            return CursorType.Door;
         }
     }
 }

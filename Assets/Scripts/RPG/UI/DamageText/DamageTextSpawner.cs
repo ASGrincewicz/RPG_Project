@@ -14,23 +14,7 @@ namespace RPG.UI.DamageText
         {
             _textPool = new ObjectPool<DamageText>(CreateText,OnGet,OnRelease,OnTextDestroy,maxSize: _maxPoolSize);
         }
-
-        /*private void Start()
-        {
-            Spawn(10);
-        }*/
-
-        //For Debugging
-        /*
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Spawn(10);
-            }
-        }
-        */
-
+        
         private DamageText CreateText()
         {
             DamageText text = Instantiate(_textPrefab,transform);

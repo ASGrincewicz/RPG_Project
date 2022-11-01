@@ -7,6 +7,7 @@
         Combat,
         Pickup,
         UI,
-        Dialogue
+        Dialogue,
+        Door
     }
 }

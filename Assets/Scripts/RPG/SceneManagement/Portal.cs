@@ -37,26 +37,29 @@ namespace RPG.SceneManagement
             }
             
             DontDestroyOnLoad(gameObject);
-            
+            PlayerController playerController;
             Fader fader = FindObjectOfType<Fader>();
             SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
+            GameObject.FindWithTag("Player").TryGetComponent(out  playerController);
+            playerController.enabled = false;
             
             yield return fader.FadeOut(_fadeOutTime);
             savingWrapper.Save();
             yield return SceneManager.LoadSceneAsync(_sceneToLoad);
-            GameObject.FindWithTag("Player").TryGetComponent(out PlayerController newPlayerController);
-            newPlayerController.enabled = false;
+            GameObject.FindWithTag("Player").TryGetComponent(out playerController);
+            playerController.enabled = false;
             
             savingWrapper.Load();
             
             Portal exitPortal = GetExitPortal();
             
             UpdatePlayer(exitPortal);
+           
             savingWrapper.Save();
             
             yield return _fadeDelay;
-            GameObject.FindWithTag("Player").TryGetComponent(out newPlayerController);
-            newPlayerController.enabled = true;
+            GameObject.FindWithTag("Player").TryGetComponent(out playerController);
+            playerController.enabled = true;
             yield return fader.FadeIn(_fadeInTime);
            
             Destroy(gameObject);
@@ -68,8 +71,10 @@ namespace RPG.SceneManagement
             if(player.TryGetComponent(out NavMeshAgent navMeshAgent))
             {
                 navMeshAgent.enabled = false;
-                navMeshAgent.Warp(portal._spawnPoint.position);
+                /*navMeshAgent.Warp(portal._spawnPoint.position);*/
                 player.transform.rotation = portal._spawnPoint.rotation;
+                navMeshAgent.Warp(portal._spawnPoint.position);
+                navMeshAgent.enabled = true;
             }
         }
 

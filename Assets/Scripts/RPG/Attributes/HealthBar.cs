@@ -1,6 +1,4 @@
-﻿using System;
-using Saving;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RPG.Attributes
 {
@@ -17,6 +15,7 @@ namespace RPG.Attributes
             {
                 HandleCharacterDeath();
             }
+            gameObject.SetActive(false);
         }
 
         public void UpdateHealthBar()

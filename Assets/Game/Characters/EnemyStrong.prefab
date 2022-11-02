@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: _characterClass
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 704802779423664556, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: m_Pitch
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 1474092162873701361, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: _health
       value: 30
@@ -114,6 +118,14 @@ PrefabInstance:
     - target: {fileID: 6300186426637956910, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7185481333629160129, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: m_Pitch
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7234676130689549986, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: m_Pitch
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7234961362104297051, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_Name

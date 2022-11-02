@@ -12,7 +12,10 @@ namespace RPG.Attributes
     [RequireComponent(typeof(Collider))]
     public class Health : MonoBehaviour,IDamageable, IRaycastable, ISaveable
     {
-        [SerializeField] private UnityEvent<float> _takeDamage;
+        /// <summary>
+        /// This event should have any objects that reflect health values as subscribers.
+        /// </summary>
+        [SerializeField] private UnityEvent<float> _onTakeDamage;
         [SerializeField] private UnityEvent _onDeath;
         [SerializeField] private UnityEvent _onRaycasted;
         [field: SerializeField] public LazyValue<float> HealthPoints { get; private set; }
@@ -84,8 +87,8 @@ namespace RPG.Attributes
         {
             //print($"{gameObject.name} took damage: {damage:0.00}.");
             HealthPoints.value = Mathf.Max(HealthPoints.value - damage, 0);
-            _takeDamage?.Invoke(damage);
-            if (HealthPoints.value == 0 )
+            _onTakeDamage?.Invoke(damage);
+            if (HealthPoints.value <= 0.0f)
             {
                 Die();
                 _onDeath?.Invoke();

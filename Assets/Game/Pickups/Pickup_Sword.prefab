@@ -64,6 +64,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5091118659616306452, guid: d525cf7e736e17f4b88d0232e22f88ff, type: 3}
+      propertyPath: weaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 466375a3edda0c64a9413a694dffb3f6, type: 2}
     - target: {fileID: 810837938946265707, guid: d525cf7e736e17f4b88d0232e22f88ff, type: 3}
       propertyPath: m_Name
       value: Pickup_Sword

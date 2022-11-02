@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: _weapon
       value: 
       objectReference: {fileID: 11400000, guid: fb5796185243beb4d89b17b82f811e4f, type: 2}
+    - target: {fileID: -5091118659616306452, guid: d525cf7e736e17f4b88d0232e22f88ff, type: 3}
+      propertyPath: weaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: fb5796185243beb4d89b17b82f811e4f, type: 2}
     - target: {fileID: 810837938946265707, guid: d525cf7e736e17f4b88d0232e22f88ff, type: 3}
       propertyPath: m_Name
       value: Pickup_Bow

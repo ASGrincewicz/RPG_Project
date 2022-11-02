@@ -388,6 +388,14 @@ PrefabInstance:
       propertyPath: _rightHandTransform
       value: 
       objectReference: {fileID: 5738878008565800650}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: defaultWeaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 31fe1b98c555a744fa82c937b303edd9, type: 2}
+    - target: {fileID: 6862066510272219169, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _defaultWeaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 31fe1b98c555a744fa82c937b303edd9, type: 2}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 1723168476651033029, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}

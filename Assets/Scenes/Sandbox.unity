@@ -605,6 +605,10 @@ PrefabInstance:
       propertyPath: _defaultWeaponName
       value: Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 1962047312162787507, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
+      propertyPath: defaultWeaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 466375a3edda0c64a9413a694dffb3f6, type: 2}
     - target: {fileID: 4615514262949092100, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: _uniqueIdentifier
       value: 23856229-d626-4b03-ab30-0e6dab757dfa
@@ -631,7 +635,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: eb83b2b658dfc194e8b26c4421e3c748, type: 2}
     - target: {fileID: 6300186426637956910, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6300186426637956910, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2444,8 +2448,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1127585982}
-  - {fileID: 288719487}
   - {fileID: 1508049880}
+  - {fileID: 288719487}
   - {fileID: 1237208367}
   - {fileID: 1273002038}
   - {fileID: 1042944460}
@@ -4431,7 +4435,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6300186426637956910, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6300186426637956910, guid: 9cac6e3005ea7ac45b8594c26c8796df, type: 3}
       propertyPath: m_LocalPosition.x

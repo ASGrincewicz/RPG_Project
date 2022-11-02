@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: _weapon
       value: 
       objectReference: {fileID: 11400000, guid: 3b2d0ddbd07da1c4c9013c7c075c2091, type: 2}
+    - target: {fileID: -5091118659616306452, guid: d525cf7e736e17f4b88d0232e22f88ff, type: 3}
+      propertyPath: weaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 3b2d0ddbd07da1c4c9013c7c075c2091, type: 2}
     - target: {fileID: 810837938946265707, guid: d525cf7e736e17f4b88d0232e22f88ff, type: 3}
       propertyPath: m_Name
       value: Pickup_Fireball
@@ -102,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 493576, guid: d6389bfdb7e456640b3a45339aac60a4, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 493576, guid: d6389bfdb7e456640b3a45339aac60a4, type: 3}
       propertyPath: m_LocalScale.x

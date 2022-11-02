@@ -4,7 +4,7 @@ namespace RPG.Combat
 {
     public class WeaponPickup : Pickup
     {
-        [SerializeField] private Weapon _weapon;
+        [SerializeField] private WeaponConfig weaponConfig;
         
         protected override void OnTriggerEnter(Collider other)
         {
@@ -16,7 +16,7 @@ namespace RPG.Combat
         {
             if (other.TryGetComponent(out Fighter fighter))
             {
-                fighter.EquipWeapon(_weapon);
+                fighter.EquipWeapon(weaponConfig);
                 _respawnDelay = new WaitForSeconds(_respawnDelayTime);
                 StartCoroutine(HideForSeconds());
             }

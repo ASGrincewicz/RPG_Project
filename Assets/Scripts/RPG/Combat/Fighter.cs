@@ -14,9 +14,10 @@ namespace RPG.Combat
     {
         [Header("Weapon Configuration")] 
         [SerializeField] private string _defaultWeaponName = "Unarmed";
-        [SerializeField] private Weapon _defaultWeapon = null;
+        [SerializeField] private WeaponConfig _defaultWeaponConfig = null;
         [SerializeField] private Transform _rightHandTransform = null;
         [SerializeField] private Transform _leftHandTransform = null;
+        private WeaponConfig _currentWeaponConfig;
         private LazyValue<Weapon> _currentWeapon;
         private Mover _mover;
         private ActionScheduler _actionScheduler;
@@ -30,6 +31,11 @@ namespace RPG.Combat
 #region Unity Events
         private void Awake()
         {
+            if (_defaultWeaponConfig == null)
+            {
+                Debug.LogError($"No Default Weapon Assigned for {gameObject.name}!!");
+            }
+            _currentWeaponConfig = _defaultWeaponConfig;
             _currentWeapon = new LazyValue<Weapon>(SetupDefaultWeapon);
             TryGetComponent(out _mover);
             TryGetComponent(out _animator);
@@ -38,12 +44,11 @@ namespace RPG.Combat
 
         private Weapon SetupDefaultWeapon()
         {
-            AttachWeapon(_defaultWeapon);
-            return _defaultWeapon;
+           return  AttachWeapon(_defaultWeaponConfig);
         }
         private void Start()
         {
-           _currentWeapon.ForceInit();
+          _currentWeapon.ForceInit();
         }
 
         private void Update()
@@ -89,17 +94,15 @@ namespace RPG.Combat
             //Since this line will be reached only if target isn't null, only need to check if dead.
             return !target.IsDead;
         }
-        public void EquipWeapon(Weapon weapon)
+        public void EquipWeapon(WeaponConfig weaponConfig)
         {
-            _currentWeapon.value = weapon;
-            AttachWeapon(weapon);
+            _currentWeaponConfig = weaponConfig;
+            _currentWeapon.value = AttachWeapon(weaponConfig);
         }
 
-       
-        
         public bool GetIsInRange(Vector3 targetPosition)
         {
-            return Vector3.Distance(transform.position, targetPosition) < _currentWeapon.value.WeaponRange;
+            return Vector3.Distance(transform.position, targetPosition) < _currentWeaponConfig.WeaponRange;
         }
 
         public IDamageable GetTarget()
@@ -111,7 +114,7 @@ namespace RPG.Combat
         {
             if (stat == Stat.Damage)
             {
-                yield return _currentWeapon.value.WeaponDamage;
+                yield return _currentWeaponConfig.WeaponDamage;
             }
         }
 
@@ -119,39 +122,39 @@ namespace RPG.Combat
         {
             if (stat == Stat.Damage)
             {
-                yield return _currentWeapon.value.PercentageBonus;
+                yield return _currentWeaponConfig.PercentageBonus;
             }
         }
 
         public object CaptureState()
         {
-            if (_currentWeapon != null)
+            if (_currentWeaponConfig != null)
             {
-                return _currentWeapon.value.name;
+                return _currentWeaponConfig.name;
             }
 
-            return _defaultWeapon.name;
+            return _defaultWeaponConfig.name;
         }
 
         public void RestoreState(object state)
         {
             string weaponName = (string)state;
-            Weapon weapon = Resources.Load<Weapon>(weaponName);
-            EquipWeapon(weapon);
+            WeaponConfig weaponConfig = Resources.Load<WeaponConfig>(weaponName);
+            EquipWeapon(weaponConfig);
         }
 #endregion
 
 #region Private Methods
 
-        private void AttachWeapon(Weapon weapon)
+        private Weapon AttachWeapon(WeaponConfig weaponConfig)
         {
-            weapon.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
+            return weaponConfig.SpawnWeapon(_rightHandTransform,_leftHandTransform ,_animator);
         }
        private void AttackBehaviour()
         {
             transform.LookAt(_damageable.GetTransform());
             //Throttle Attack Animation
-            if (_timeSinceLastAttack > _currentWeapon.value.TimeBetweenAttacks && !_damageable.IsDead)
+            if (_timeSinceLastAttack > _currentWeaponConfig.TimeBetweenAttacks && !_damageable.IsDead)
             {
                 TriggerAttack();
                 _timeSinceLastAttack = 0f;
@@ -168,9 +171,14 @@ namespace RPG.Combat
             {
                 TryGetComponent(out BaseStats baseStats);
                 float damage = baseStats.GetStat(Stat.Damage);
-                if (_currentWeapon.value.HasProjectile())
+                if (_currentWeapon.value != null)
                 {
-                    _currentWeapon.value.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable,gameObject,damage);
+                    _currentWeapon.value.OnHit();
+                }
+                    
+                if (_currentWeaponConfig.HasProjectile())
+                {
+                    _currentWeaponConfig.LaunchProjectile(_rightHandTransform, _leftHandTransform, _damageable,gameObject,damage);
                 }
                 else
                 {

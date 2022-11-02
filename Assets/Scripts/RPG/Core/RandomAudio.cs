@@ -7,6 +7,8 @@ namespace RPG.Core
     {
         
         [SerializeField] private AudioClip[] _audioClips;
+        [SerializeField, Range(0,3)] private float _minimumPitch;
+        [SerializeField, Range(0,3)] private float _maxPitch;
         private AudioSource _audioSource;
 
         private void Awake()
@@ -18,6 +20,11 @@ namespace RPG.Core
         {
             AudioClip clip = _audioClips[Random.Range(0, _audioClips.Length - 1)];
             _audioSource.PlayOneShot(clip);
+        }
+
+        public void PitchRandom()
+        {
+            _audioSource.pitch = Random.Range(_minimumPitch, _maxPitch);
         }
     }
 }

@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultWeaponName: Unarmed
-  _defaultWeapon: {fileID: 11400000, guid: 31fe1b98c555a744fa82c937b303edd9, type: 2}
+  _defaultWeaponConfig: {fileID: 0}
   _rightHandTransform: {fileID: 0}
   _leftHandTransform: {fileID: 0}
 --- !u!114 &7976076504838969443
@@ -415,6 +415,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 677a588867b19234ba2e66c09d82ba28, type: 3}
   - {fileID: 8300000, guid: 1bf9ee80f2374534b80d6c5880558f5e, type: 3}
   - {fileID: 8300000, guid: 0a490d2ac2e526246ab488aed902f6f1, type: 3}
+  _minimumPitch: 0
+  _maxPitch: 0
 --- !u!1 &6587260253863565827
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,6 +467,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: da4f5695bff34bf4b88959334d31f55f, type: 3}
   - {fileID: 8300000, guid: 2ebf38d5081e6024eb5214ce611bd747, type: 3}
   - {fileID: 8300000, guid: e7a068fc894ced2438c719feae89ea40, type: 3}
+  _minimumPitch: 0
+  _maxPitch: 0
 --- !u!1001 &6490252667358461606
 PrefabInstance:
   m_ObjectHideFlags: 0

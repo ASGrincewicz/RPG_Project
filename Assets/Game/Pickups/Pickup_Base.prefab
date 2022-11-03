@@ -77,4 +77,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canRespawn: 1
   _respawnDelayTime: 5
-  _weapon: {fileID: 11400000, guid: 466375a3edda0c64a9413a694dffb3f6, type: 2}
+  _grabDistance: 5
+  weaponConfig: {fileID: 0}

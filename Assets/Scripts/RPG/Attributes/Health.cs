@@ -16,6 +16,8 @@ namespace RPG.Attributes
         /// This event should have any objects that reflect health values as subscribers.
         /// </summary>
         [SerializeField] private UnityEvent<float> _onTakeDamage;
+
+        [SerializeField] private UnityEvent<float> _onHeal;
         [SerializeField] private UnityEvent _onDeath;
         [SerializeField] private UnityEvent _onRaycasted;
         [field: SerializeField] public LazyValue<float> HealthPoints { get; private set; }
@@ -81,6 +83,12 @@ namespace RPG.Attributes
         public float GetFraction()
         {
             return HealthPoints.value / _baseStats.GetStat(Stat.Health);
+        }
+
+        public void Heal(float amount)
+        {
+            HealthPoints.value = Mathf.Min(HealthPoints.value + amount, GetMaxHealth());
+            _onHeal?.Invoke(amount);
         }
 
         public void TakeDamage(GameObject instigator, float damage)

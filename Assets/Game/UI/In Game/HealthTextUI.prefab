@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 7790734487497084490}
   - component: {fileID: 3633557810776286705}
   - component: {fileID: 3808657165348732648}
-  - component: {fileID: 4540315134471501965}
+  - component: {fileID: 604264373393959723}
   m_Layer: 5
-  m_Name: DamageTextUI
+  m_Name: HealthTextUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,7 +145,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &4540315134471501965
+--- !u!114 &604264373393959723
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -233,8 +233,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190335
-  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
+    rgba: 4279159817
+  m_fontColor: {r: 0.03404235, g: 0.8018868, b: 0.053003293, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

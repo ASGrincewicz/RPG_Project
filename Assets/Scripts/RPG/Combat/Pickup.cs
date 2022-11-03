@@ -8,6 +8,7 @@ namespace RPG.Combat
     {
         [SerializeField] protected bool _canRespawn = false;
         [SerializeField] protected float _respawnDelayTime = 5.0f;
+        [SerializeField] protected float _grabDistance = 5.0f;
         protected WaitForSeconds _respawnDelay;
 
         protected virtual void OnTriggerEnter(Collider other)
@@ -38,13 +39,12 @@ namespace RPG.Combat
 
         public bool HandleRaycast(PlayerController controller)
         {
-            if (Input.GetMouseButtonDown(0))
+            float distance = Vector3.Distance(controller.transform.position, gameObject.transform.position);
+            if ( distance <= _grabDistance)
             {
-                controller.TryGetComponent(out Collider other);
-                PickUp(other);
+                return true;
             }
-
-            return true;
+            return false;
         }
         public CursorType GetCursorType()
         {

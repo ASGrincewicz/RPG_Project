@@ -121,6 +121,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _onHeal.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5003119144807203067}
+    - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 6104826471491774429}
@@ -143,6 +147,10 @@ PrefabInstance:
     - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _onDeath.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _onHeal.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Spawn
       objectReference: {fileID: 0}
     - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _onTakeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -175,7 +183,7 @@ PrefabInstance:
     - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _onTakeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 747707415275181560}
+      objectReference: {fileID: 6188238081142920672}
     - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _onTakeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -242,7 +250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _onTakeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: RPG.UI.DamageText.DamageTextSpawner, Assembly-CSharp
+      value: RPG.UI.HealText.HPTextSpawner, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: _onTakeDamage.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -401,17 +409,6 @@ PrefabInstance:
     - {fileID: 1723168476651033029, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
     - {fileID: 4020322478751961110, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
---- !u!114 &747707415275181560 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5647515505544613226, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
-  m_PrefabInstance: {fileID: 4900024700502562962}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d16d04da930c403b980880976b96d310, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1474092162873701361 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -3425720324365325469, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
@@ -423,6 +420,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc59367d5464967b6ad9e538a3db717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5003119144807203067 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 103236282916329577, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+  m_PrefabInstance: {fileID: 4900024700502562962}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f34939c465bc49dd8176087946fdf7b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5322170240395634576 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 998751429880954626, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
@@ -432,6 +440,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0e0c896589f44cca139dff8725de2af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6188238081142920672 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1288428888678583666, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+  m_PrefabInstance: {fileID: 4900024700502562962}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f34939c465bc49dd8176087946fdf7b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &6300186426637956910 stripped

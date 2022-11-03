@@ -1,13 +1,13 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace RPG.UI.DamageText
+namespace RPG.UI.HealText
 {
-    public class DamageText : MonoBehaviour
+    public class HPTextUI : MonoBehaviour
     {
         public TMP_Text Text;
-        private IObjectPool<DamageText> _pool;
+        private IObjectPool<HPTextUI> _pool;
        
         //Animation Event
         private void Release()
@@ -15,7 +15,7 @@ namespace RPG.UI.DamageText
             _pool.Release(this);
         }
 
-        public void SetPool(IObjectPool<DamageText> pool)
+        public void SetPool(IObjectPool<HPTextUI> pool)
         {
             _pool = pool;
         }

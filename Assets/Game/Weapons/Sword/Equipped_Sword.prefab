@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6842209864892127887}
   - component: {fileID: -6412652392039708174}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Equipped_Sword
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 1986991288941061706}
   - component: {fileID: 5347025642841049411}
   - component: {fileID: 4444176673646525168}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,6 +228,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Wep_Sword_01
       objectReference: {fileID: 0}
+    - target: {fileID: 181534, guid: 13af847dfa6dbe844ba4b7c902f98f67, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 489998, guid: 13af847dfa6dbe844ba4b7c902f98f67, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -271,6 +275,18 @@ PrefabInstance:
     - target: {fileID: 489998, guid: 13af847dfa6dbe844ba4b7c902f98f67, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -91.936
+      objectReference: {fileID: 0}
+    - target: {fileID: 64883148019054208, guid: 13af847dfa6dbe844ba4b7c902f98f67, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 64924450474238042, guid: 13af847dfa6dbe844ba4b7c902f98f67, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 64924450474238042, guid: 13af847dfa6dbe844ba4b7c902f98f67, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13af847dfa6dbe844ba4b7c902f98f67, type: 3}

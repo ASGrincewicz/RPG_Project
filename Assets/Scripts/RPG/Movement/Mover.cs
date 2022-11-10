@@ -11,6 +11,7 @@ namespace RPG.Movement
     public class Mover : MonoBehaviour, IAction, ISaveable
     {
         [SerializeField] private float _maxSpeed = 5.66f;
+        [SerializeField] private float _maxNavMeshPathLength = 10.0f;
         private Health _health;
         private ActionScheduler _actionScheduler;
         private NavMeshAgent _navMeshAgent;
@@ -38,6 +39,17 @@ namespace RPG.Movement
             _actionScheduler.StartAction(this);
             MoveTo(destination, speedFraction);
         }
+
+        public bool CanMoveTo(Vector3 destination)
+        {
+            NavMeshPath path = new NavMeshPath();
+            bool hasPath = NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path);
+            if (!hasPath) return false;
+            if (path.status != NavMeshPathStatus.PathComplete) return false;
+            if (GetPathLength(path) > _maxNavMeshPathLength) return false;
+
+            return true;
+        }
         public void MoveTo(Vector3 destination, float speedFraction)
         {
             _navMeshAgent.SetDestination(destination);
@@ -47,12 +59,18 @@ namespace RPG.Movement
 
         public void Stop()
         {
-            _navMeshAgent.isStopped = true;
+            if (_navMeshAgent.isActiveAndEnabled)
+            {
+                _navMeshAgent.isStopped = true;
+            }
         }
 
         public void Cancel()
         {
-           //print("Move cancelled.");
+            if (_navMeshAgent.isActiveAndEnabled)
+            {
+                _navMeshAgent.isStopped = true;
+            }
         }
         private void UpdateAnimator()
         {
@@ -64,7 +82,16 @@ namespace RPG.Movement
             //Set animator blend value to desired forward speed.
             _animator.SetFloat(_forwardSpeedParameter, speed);
         }
-
+        private float GetPathLength(NavMeshPath path)
+        {
+            float total = 0.0f;
+            if (path.corners.Length < 2) return total;
+            for (int i = 0; i < path.corners.Length -1; i++)
+            {
+                total += Vector3.Distance(path.corners[i], path.corners[i + 1]);
+            }
+            return total;
+        }
         public object CaptureState()
         {
             return new SerializableVector3(transform.position);

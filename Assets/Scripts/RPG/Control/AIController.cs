@@ -11,6 +11,7 @@ namespace RPG.Control
     {
         [SerializeField] private float _chaseDistance = 3.0f;
         [SerializeField] private float _suspicionWaitTime = 3.0f;
+        [SerializeField] private LayerMask _blockingLayer;
 
         [Header("Patrol Configuration")] 
         [SerializeField, Range(0,1)] private float _patrolSpeedFraction = 0.2f;

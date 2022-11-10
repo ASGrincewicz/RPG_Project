@@ -3,26 +3,38 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Building
+  - NPC
+  - AI_Waypoint
+  - Prop
+  - Weapon
+  - Projectile
+  - Pickup
+  - Camera
+  - Cinematic
+  - Portal
+  - Nature
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Buildings
+  - Enemy
+  - NPC
+  - AI_Waypoint
+  - Prop
+  - Weapon
+  - Projectile
+  - Pickup
+  - Camera
+  - Cinematic
+  - Portal
+  - Nature
   - 
   - 
   - 

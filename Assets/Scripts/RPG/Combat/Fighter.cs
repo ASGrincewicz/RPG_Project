@@ -17,6 +17,7 @@ namespace RPG.Combat
         [SerializeField] private WeaponConfig _defaultWeaponConfig = null;
         [SerializeField] private Transform _rightHandTransform = null;
         [SerializeField] private Transform _leftHandTransform = null;
+        
         private WeaponConfig _currentWeaponConfig;
         private LazyValue<Weapon> _currentWeapon;
         private Mover _mover;
@@ -87,10 +88,9 @@ namespace RPG.Combat
         
         public bool CanAttack(IDamageable target)
         {
-            if (target == null || target == this.GetComponent<IDamageable>())
-            {
-                return false;
-            }
+            if (target == null || target == GetComponent<IDamageable>()) return false;
+            
+            if (!_mover.CanMoveTo(target.GetPosition())) return false;
             //Since this line will be reached only if target isn't null, only need to check if dead.
             return !target.IsDead;
         }

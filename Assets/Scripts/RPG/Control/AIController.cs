@@ -11,6 +11,7 @@ namespace RPG.Control
     {
         [SerializeField] private float _chaseDistance = 3.0f;
         [SerializeField] private float _suspicionWaitTime = 3.0f;
+        [SerializeField] private float _aggroCooldownTime = 5.0f;
         [SerializeField] private LayerMask _blockingLayer;
 
         [Header("Patrol Configuration")] 
@@ -24,6 +25,7 @@ namespace RPG.Control
         private int _currentWaypointIndex = 0;
         private float _timeSinceLastSawPlayer = Mathf.Infinity;
         private float _timeAtWaypoint = Mathf.Infinity;
+        private float _timeSinceAggravated = Mathf.Infinity;
         //Cached References
         private Fighter _fighter;
         private Mover _mover;
@@ -76,7 +78,7 @@ namespace RPG.Control
         private void Update()
         {
             if(_health.IsDead) return;
-            if (IsInRange(_player.gameObject))
+            if (IsAggravated(_player.gameObject))
             {
                 if (_fighter.CanAttack(_target))
                 {
@@ -95,10 +97,16 @@ namespace RPG.Control
             UpdateTimers();
         }
 
+        public void Aggravate()
+        {
+            _timeSinceAggravated = 0;
+        }
+
         private void UpdateTimers()
         {
             _timeSinceLastSawPlayer += Time.deltaTime;
             _timeAtWaypoint += Time.deltaTime;
+            _timeSinceAggravated += Time.deltaTime;
         }
 
         private void PatrolBehavior()
@@ -157,7 +165,7 @@ namespace RPG.Control
             _fighter.Attack(_target);
         }
 
-        private bool IsInRange(GameObject target)
+        private bool IsAggravated(GameObject target)
         {
             float distance = Vector3.Distance(_transform.position, target.transform.position);
             if (_target == null)
@@ -165,7 +173,7 @@ namespace RPG.Control
                 target.TryGetComponent(out _target);
             }
             
-            if (distance < _chaseDistance && _target != null)
+            if (distance < _chaseDistance || _timeSinceAggravated < _aggroCooldownTime && _target != null)
             {
                 return true;
             }

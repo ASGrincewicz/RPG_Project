@@ -79,6 +79,13 @@ namespace RPG.Combat
             _actionScheduler.StartAction(this);
         }
 
+        public void Attack(GameObject combatTarget)
+        {
+            combatTarget.TryGetComponent(out _damageable);
+           // print($"Combat Target is {combatTarget.name}");
+            _actionScheduler.StartAction(this);
+        }
+
         public void Cancel()
         {
             StopAttack();

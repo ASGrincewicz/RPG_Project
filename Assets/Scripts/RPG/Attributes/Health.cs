@@ -1,4 +1,5 @@
-﻿using GameDevTV.Utils;
+﻿using System;
+using GameDevTV.Utils;
 using RPG.Combat;
 using RPG.Control;
 using RPG.Core;
@@ -26,6 +27,7 @@ namespace RPG.Attributes
         private BaseStats _baseStats;
         private float _state = 0;
         private readonly int _dieTrigger = Animator.StringToHash("Die");
+        public event Action<GameObject> OnTakeDamage;
        
 
         private void Awake()
@@ -96,6 +98,7 @@ namespace RPG.Attributes
             //print($"{gameObject.name} took damage: {damage:0.00}.");
             HealthPoints.value = Mathf.Max(HealthPoints.value - damage, 0);
             _onTakeDamage?.Invoke(damage);
+            OnTakeDamage?.Invoke(instigator);
             if (HealthPoints.value <= 0.0f)
             {
                 Die();

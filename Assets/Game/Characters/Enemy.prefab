@@ -780,6 +780,10 @@ PrefabInstance:
       propertyPath: _maxSpeed
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3121047557625718998, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
+      propertyPath: _maxNavMeshPathLength
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 4572300904474370668, guid: 1f2e056854383a84c9d8d0b8855722b3, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -944,6 +948,7 @@ MonoBehaviour:
   _blockingLayer:
     serializedVersion: 2
     m_Bits: 8
+  _shoutDistance: 10
   _patrolSpeedFraction: 0.55
   _patrolPath: {fileID: 0}
   _waypointTolerance: 1

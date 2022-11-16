@@ -1,3 +1,4 @@
+using System;
 using GameDevTV.Utils;
 using RPG.Attributes;
 using RPG.Combat;
@@ -13,6 +14,7 @@ namespace RPG.Control
         [SerializeField] private float _suspicionWaitTime = 3.0f;
         [SerializeField] private float _aggroCooldownTime = 5.0f;
         [SerializeField] private LayerMask _blockingLayer;
+        [SerializeField] private float _shoutDistance = 10.0f;
 
         [Header("Patrol Configuration")] 
         [SerializeField, Range(0,1)] private float _patrolSpeedFraction = 0.2f;
@@ -34,6 +36,7 @@ namespace RPG.Control
         private GameObject _player;
         private IDamageable _target;
         private Health _health;
+        
 
         private void Awake()
         {
@@ -59,6 +62,16 @@ namespace RPG.Control
             _guardPosition = new LazyValue<Vector3>(GetGuardPosition);
         }
 
+        private void OnEnable()
+        {
+            _health.OnTakeDamage += Aggravate;
+        }
+
+        private void OnDisable()
+        {
+            _health.OnTakeDamage -= Aggravate;
+        }
+
         private Vector3 GetGuardPosition()
         {
             return transform.position;
@@ -78,12 +91,9 @@ namespace RPG.Control
         private void Update()
         {
             if(_health.IsDead) return;
-            if (IsAggravated(_player.gameObject))
+            if (IsAggravated()&& _fighter.CanAttack(_target))
             {
-                if (_fighter.CanAttack(_target))
-                {
-                    AttackBehavior();
-                }
+                AttackBehavior();
             }
             else if(_timeSinceLastSawPlayer < _suspicionWaitTime)
             {
@@ -97,8 +107,13 @@ namespace RPG.Control
             UpdateTimers();
         }
 
-        public void Aggravate()
+        public void Aggravate(GameObject target)
         {
+            target.TryGetComponent(out _target);
+            if (target != null)
+            {
+                print($"{gameObject.name} is targeting {_target.GetTransform().gameObject.name}");
+            }
             _timeSinceAggravated = 0;
         }
 
@@ -163,22 +178,30 @@ namespace RPG.Control
             _timeSinceLastSawPlayer = 0;
             //Change Speed to Chase Speed.
             _fighter.Attack(_target);
+            AggravateNearbyEnemies();
         }
 
-        private bool IsAggravated(GameObject target)
+        private void AggravateNearbyEnemies()
         {
-            float distance = Vector3.Distance(_transform.position, target.transform.position);
-            if (_target == null)
-            { 
-                target.TryGetComponent(out _target);
-            }
-            
-            if (distance < _chaseDistance || _timeSinceAggravated < _aggroCooldownTime && _target != null)
-            {
-                return true;
-            }
+          RaycastHit[] hits =  Physics.SphereCastAll(transform.position, _shoutDistance, Vector3.up, 0);
+          
+          //Loop over all the hits
+          foreach (RaycastHit hit in hits)
+          {
+              AIController ai = hit.collider.GetComponent<AIController>();
+              if (ai == null) continue;
+              ai.Aggravate(_target.GetTransform().gameObject);
+          }
+          //Find enemy components
+          //aggravate those enemies
+        }
 
-            return false;
+        private bool IsAggravated()
+        {
+            _player.TryGetComponent(out _target);
+            float distance = Vector3.Distance(_target.GetPosition(), transform.position);
+
+            return distance < _chaseDistance || _timeSinceAggravated < _aggroCooldownTime;
         }
         //Called by Unity
         #if UNITY_EDITOR
@@ -186,6 +209,8 @@ namespace RPG.Control
         {
             Gizmos.color = Color.cyan;
             Gizmos.DrawWireSphere(transform.position, _chaseDistance);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position,_shoutDistance);
         }
         #endif
     }

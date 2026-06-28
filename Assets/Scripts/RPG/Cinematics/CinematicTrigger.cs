@@ -7,17 +7,34 @@ namespace RPG.Cinematics
     public class CinematicTrigger : MonoBehaviour,ISaveable
     {
         [SerializeField]  private bool _hasPlayed = false;
+        private PlayableDirector _director;
+
+        private void OnEnable()
+        {
+            TryGetComponent(out PlayableDirector _director);
+            _director.played += SetPlayed;
+        }
+
+        private void OnDisable()
+        {
+            TryGetComponent(out PlayableDirector _director);
+            _director.played -= SetPlayed;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (_hasPlayed) return;
             if (!other.CompareTag("Player")) return;
             
-            if (TryGetComponent(out PlayableDirector director))
+            if (TryGetComponent(out _director))
             {
-                director.Play();
+                _director.Play();
             }
+        }
+
+        private void SetPlayed(PlayableDirector director)
+        {
             _hasPlayed = true;
-            print($"Cinematic: Has Played ={_hasPlayed}.");
         }
 
         public object CaptureState()

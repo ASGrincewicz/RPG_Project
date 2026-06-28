@@ -7,6 +7,7 @@ namespace RPG.Stats
     {
         [SerializeField] private TMP_Text _xpValueText;
         private Experience _experience;
+        private BaseStats _baseStats;
 
         private void Awake()
         {
@@ -14,6 +15,7 @@ namespace RPG.Stats
             if (player != null)
             {
                 player.TryGetComponent(out _experience);
+                player.TryGetComponent(out _baseStats);
             }
             else
             {
@@ -23,7 +25,7 @@ namespace RPG.Stats
 
         private void Update()
         {
-            _xpValueText.text = $"{_experience.GetXP():N1}";
+            _xpValueText.text = $"{_experience.GetXP():N1}/{_baseStats.GetBaseStat(Stat.XPtoLevelUp)}";
         }
     }
 }

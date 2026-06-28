@@ -1,5 +1,6 @@
 using RPG.Attributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace RPG.Combat
 {
@@ -11,6 +12,7 @@ namespace RPG.Combat
         [SerializeField] private bool _isSeeker;
         [SerializeField] private GameObject _hitEffect;
         [SerializeField] private GameObject[] _destroyOnHit;
+        [SerializeField] private UnityEvent _onPlaySound;
         private IDamageable _target;
         private float _damage;
         private GameObject _instigator;
@@ -62,6 +64,7 @@ namespace RPG.Combat
             {
                 if (_target.IsDead) return;
                 _speed = 0;
+                _onPlaySound?.Invoke();
                 _target.TakeDamage(_instigator,_damage);
                 if (_hitEffect != null)
                 {

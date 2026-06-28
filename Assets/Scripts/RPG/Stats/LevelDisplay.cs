@@ -16,7 +16,18 @@ namespace RPG.Stats
             }
         }
 
-        private void Update()
+        private void OnEnable()
+        {
+            _baseStats.onLevelUp += UpdateLevel;
+        }
+
+        private void OnDisable()
+        {
+            _baseStats.onLevelUp -= UpdateLevel;
+        }
+
+
+        private void UpdateLevel()
         {
             _levelValueText.text = $"{_baseStats.GetLevel()}";
         }

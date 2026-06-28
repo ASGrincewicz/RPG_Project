@@ -1,21 +1,33 @@
 ﻿using System;
 using GameDevTV.Utils;
+using RPG.Combat;
+using RPG.Control;
 using RPG.Core;
 using RPG.Stats;
 using Saving;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace RPG.Attributes
 {
     [RequireComponent(typeof(Collider))]
-    public class Health : MonoBehaviour, IDamageable, ISaveable
+    public class Health : MonoBehaviour,IDamageable, IRaycastable, ISaveable
     {
+        /// <summary>
+        /// This event should have any objects that reflect health values as subscribers.
+        /// </summary>
+        [SerializeField] private UnityEvent<float> _onTakeDamage;
+
+        [SerializeField] private UnityEvent<float> _onHeal;
+        [SerializeField] private UnityEvent _onDeath;
+        [SerializeField] private UnityEvent _onRaycasted;
         [field: SerializeField] public LazyValue<float> HealthPoints { get; private set; }
         [field:SerializeField] public bool IsDead { get; private set; }
         [SerializeField] private float _regenerationPercentage = 75.0f;
         private BaseStats _baseStats;
         private float _state = 0;
         private readonly int _dieTrigger = Animator.StringToHash("Die");
+        public event Action<GameObject> OnTakeDamage;
        
 
         private void Awake()
@@ -52,14 +64,6 @@ namespace RPG.Attributes
         private void Start()
         {
             HealthPoints.ForceInit();
-            /*if (_baseStats != null && _state == 0 && !IsDead)
-            {
-                HealthPoints.value = _baseStats.GetStat(Stat.Health);                                                                         
-            }
-            else if(HealthPoints.value <= 0 ||_baseStats == null || IsDead)
-            {
-                HealthPoints.value = 0;
-            }*/
         }
 
         public float GetMaxHealth()
@@ -72,19 +76,33 @@ namespace RPG.Attributes
         {
             if (_baseStats != null)
             {
-                return 100.0f*(HealthPoints.value / _baseStats.GetStat(Stat.Health));
+                return 100.0f*GetFraction();
             }
 
             return 0.0f;
         }
 
+        public float GetFraction()
+        {
+            return HealthPoints.value / _baseStats.GetStat(Stat.Health);
+        }
+
+        public void Heal(float amount)
+        {
+            HealthPoints.value = Mathf.Min(HealthPoints.value + amount, GetMaxHealth());
+            _onHeal?.Invoke(amount);
+        }
+
         public void TakeDamage(GameObject instigator, float damage)
         {
-            print($"{gameObject.name} took damage: {damage:0.00}.");
+            //print($"{gameObject.name} took damage: {damage:0.00}.");
             HealthPoints.value = Mathf.Max(HealthPoints.value - damage, 0);
-            if (HealthPoints.value == 0 )
+            _onTakeDamage?.Invoke(damage);
+            OnTakeDamage?.Invoke(instigator);
+            if (HealthPoints.value <= 0.0f)
             {
                 Die();
+                _onDeath?.Invoke();
                 AwardExperience(instigator);
             }
         }
@@ -135,6 +153,28 @@ namespace RPG.Attributes
                 return capsuleCollider;
             } 
             return null;
+        }
+
+        public bool HandleRaycast(PlayerController controller)
+        {
+            if(!IsDead) _onRaycasted?.Invoke();
+            controller.TryGetComponent(out Fighter fighter);
+            if (!fighter.CanAttack(this))
+            {
+                return false;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                fighter.Attack(this);
+            }
+
+            return true;
+        }
+
+        public CursorType GetCursorType()
+        {
+            return CursorType.Combat;
         }
 
         public object CaptureState()

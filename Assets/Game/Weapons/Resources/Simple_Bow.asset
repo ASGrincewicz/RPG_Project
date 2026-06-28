@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Simple_Bow
   m_EditorClassIdentifier: 
   _animatorOverrideController: {fileID: 22100000, guid: 70d4a9a4334cc7c49992bd9d7ba60696, type: 2}
-  _weaponPrefab: {fileID: 8284024072517552261, guid: 8bc4fc2f67409154a8f24d867b3ddf47, type: 3}
+  _weaponPrefab: {fileID: -8580378978717430416, guid: 8bc4fc2f67409154a8f24d867b3ddf47, type: 3}
   WeaponDamage: 5
   PercentageBonus: 0
   WeaponRange: 15

@@ -1,4 +1,4 @@
-using RPG.Stats;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -18,7 +18,17 @@ namespace RPG.Attributes
             }
         }
 
-        private void Update()
+        private void Start()
+        {
+            UpdateHealthValue();
+        }
+
+        /*private void Update()
+        {
+            _healthValueText.text = $"{_health.HealthPoints.value:00}/{_health.GetMaxHealth()}";
+        }*/
+
+        public void UpdateHealthValue()
         {
             _healthValueText.text = $"{_health.HealthPoints.value:00}/{_health.GetMaxHealth()}";
         }

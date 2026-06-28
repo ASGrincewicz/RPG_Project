@@ -1,20 +1,27 @@
+using System;
 using RPG.Attributes;
 using RPG.Combat;
 using UnityEngine;
 using RPG.Movement;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
+using Vector3 = UnityEngine.Vector3;
 
 namespace RPG.Control
 {
     [RequireComponent(typeof(Mover))]
     public class PlayerController : MonoBehaviour
     {
+        [SerializeField] private CursorMapping[] _cursorMappings;
+        [SerializeField] private float _maxNavMeshProjectionDistance = 1.0f;
+        
+        [SerializeField] private LayerMask _ignoredLayer;
         private Mover _mover;
         private Fighter _fighter;
         private Camera _mainCamera;
         private Health _health;
         private IDamageable _damageable;
-
+        
         private void Awake()
         {
             if(!TryGetComponent(out _fighter))
@@ -40,81 +47,131 @@ namespace RPG.Control
 
         private void OnEnable()
         {
-            try
+            if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
             {
-                if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
-                {
-                    navMeshAgent.enabled = true;
-                }
-            }
-            catch
-            {
-                Debug.LogError("Nav Mesh Agent not found!");
+                navMeshAgent.enabled = true;
             }
         }
 
         private void OnDisable()
         {
-            try
+            if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
             {
-                if (_mover.TryGetComponent(out NavMeshAgent navMeshAgent))
-                {
-                    navMeshAgent.enabled = false;
-                }
-            }
-            catch
-            {
-                Debug.LogError("Nav Mesh Agent not found!");
+                navMeshAgent.enabled = false;
             }
         }
 
         private void Update()
         {
+            if (InteractWithUI()) return;
             if (_health.IsDead) return;
-            if(InteractWithCombat()) return;
+            if (InteractWithComponent()) return;
             if (InteractWithMovement()) return;
+            SetCursor(CursorType.None);
+        }
+        private bool InteractWithUI()
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                SetCursor(CursorType.UI);
+                return true;
+            }
+            return false;
+        }
+        private RaycastHit[] RayCastAllSorted()
+        {
+            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+            float[] distances = new float[hits.Length];
+            for (int i = 0; i < hits.Length; i++)
+            {
+                distances[i] = hits[i].distance;
+            }
+            Array.Sort(distances, hits);
+            return hits;
+        }
+
+        private bool InteractWithComponent()
+        {
+            RaycastHit[] hits = RayCastAllSorted();
+
+            foreach (RaycastHit hit in hits)
+            {
+                //Test for distance like with Movement code
+                Vector3 target = hit.point;
+                bool hasHit = RaycastNavMesh(out target);
+                if (!hasHit && !_fighter.GetIsInRange(target)) return false;
+                //
+                IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
+                foreach (IRaycastable raycastable in raycastables)
+                {
+                    if (raycastable.HandleRaycast(this))
+                    {
+                        SetCursor(raycastable.GetCursorType());
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private bool InteractWithMovement()
         {
-            RaycastHit hitInfo;
-            bool hasHit = Physics.Raycast(GetMouseRay(), out hitInfo);
+            Vector3 target;
+            bool hasHit = RaycastNavMesh(out target);
             if (hasHit)
             {
+                if (!_mover.CanMoveTo(target)) return false;
                 if (Input.GetMouseButton(0))
                 {
-                    _mover.StartMoveAction(hitInfo.point,1);
+                    _mover.StartMoveAction(target,1);
                 }
+                SetCursor(CursorType.Movement);
                 return true;
             }
             return false;
         }
 
-        private bool InteractWithCombat()
+        private bool RaycastNavMesh(out Vector3 target)
         {
-            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
-
-            foreach (RaycastHit hit in hits)
-            {
-                hit.transform.gameObject.TryGetComponent(out IDamageable target);
-                
-                if(!_fighter.CanAttack(target)) continue;
-                
-                if(Input.GetMouseButton(0) && target !=_damageable)
-                {
-                    //Attack
-                    _fighter.Attack(target);
-                }
-
-                return true;
-            }
-
-            return false;
+            target = new Vector3();
+            RaycastHit hit;
+            bool hasHit = Physics.Raycast(GetMouseRay(), out hit,_ignoredLayer);
+            if (!hasHit) return false;
+            //Raycast to terrain
+            //Find nearest navmesh point
+            NavMeshHit navMeshHit;
+            
+            bool hasCastToNavMesh = NavMesh.SamplePosition(hit.point, out navMeshHit, _maxNavMeshProjectionDistance,
+                NavMesh.AllAreas);
+            //return true if found
+            if (!hasCastToNavMesh) return false;
+            target = navMeshHit.position;
+            
+            return true;
         }
 
         private Ray GetMouseRay()
         {
             return _mainCamera.ScreenPointToRay(Input.mousePosition);
+        }
+
+        private void SetCursor(CursorType type)
+        {
+            CursorMapping mapping = GetCursorMapping(type);
+            Cursor.SetCursor(mapping.texture, mapping.hotspot, CursorMode.Auto);
+        }
+
+        private CursorMapping GetCursorMapping(CursorType type)
+        {
+            foreach (CursorMapping mapping in _cursorMappings)
+            {
+                if (mapping.cursorType == type)
+                {
+                    return mapping;
+                }
+            }
+            return _cursorMappings[0];
         }
     }
 }

@@ -5066,13 +5066,37 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2619985154497034450, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
+      propertyPath: m_Volume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2619985154497034450, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8c4a6d3173c94d04c9896a4afd752f69, type: 3}
     - target: {fileID: 4486870569464030844, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
       propertyPath: m_Name
       value: FIreball_Projectile_Base
       objectReference: {fileID: 0}
+    - target: {fileID: 6102586600990983835, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
+      propertyPath: m_Volume
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6102586600990983835, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: da0093ebe4323b846a8f67e40229df09, type: 3}
+    - target: {fileID: 6102586600990983835, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6114572905831908017, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6686966257938070803, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7262922191141846078, guid: 34a03a8a16a9d0e4e938cc3a4d592f51, type: 3}
       propertyPath: m_IsActive
